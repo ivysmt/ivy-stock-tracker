@@ -6,86 +6,110 @@
 <title>Ivy 自選股儀表板</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang TC','Microsoft JhengHei',sans-serif;background:#f8f9fa;color:#1a1a1a;font-size:13px}
-.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.topbar h1{font-size:15px;font-weight:600;color:#111}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.updated{font-size:11px;color:#888}
-.main{padding:16px 20px}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
-.sc{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px 14px}
-.sc .l{font-size:11px;color:#888;margin-bottom:3px}
-.sc .v{font-size:22px;font-weight:600;color:#111}
-.toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
-.toolbar input[type=text]{height:32px;font-size:12px;padding:0 10px;border-radius:8px;border:1px solid #d1d5db;background:#fff;color:#111;width:150px;outline:none}
-.toolbar input[type=text]:focus{border-color:#3b82f6}
-.toolbar select{height:32px;font-size:12px;padding:0 8px;border-radius:8px;border:1px solid #d1d5db;background:#fff;color:#111;outline:none}
-.btn{height:32px;padding:0 12px;font-size:12px;border-radius:8px;border:1px solid #d1d5db;background:#fff;color:#374151;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
-.btn:hover{background:#f3f4f6}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang TC','Microsoft JhengHei',sans-serif;background:#f4f5f7;color:#1a1a1a;font-size:13px}
+.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar h1{font-size:15px;font-weight:700;color:#111}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.updated{font-size:11px;color:#9ca3af}
+.main{padding:12px 16px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.sc{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:9px 12px}
+.sc .l{font-size:10px;color:#9ca3af;margin-bottom:2px}
+.sc .v{font-size:20px;font-weight:700;color:#111}
+.toolbar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.toolbar input[type=text]{height:30px;font-size:12px;padding:0 10px;border-radius:7px;border:1px solid #d1d5db;background:#fff;color:#111;width:140px;outline:none}
+.toolbar input[type=text]:focus{border-color:#2563eb}
+.toolbar select{height:30px;font-size:12px;padding:0 8px;border-radius:7px;border:1px solid #d1d5db;background:#fff;color:#111;outline:none}
+.btn{height:30px;padding:0 11px;font-size:12px;border-radius:7px;border:1px solid #d1d5db;background:#fff;color:#374151;cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-family:inherit;white-space:nowrap}
+.btn:hover{background:#f9fafb}
 .btn-p{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
 .btn-p:hover{background:#1e40af}
-.btn-g{background:#16a34a;color:#fff;border-color:#16a34a}
-.btn-g:hover{background:#15803d}
-.tbl-outer{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
-thead th{background:#f9fafb;color:#6b7280;font-weight:600;font-size:11px;padding:8px 8px;text-align:left;cursor:pointer;user-select:none;white-space:nowrap;border-bottom:1px solid #e5e7eb}
+.btn-r{background:#dc2626;color:#fff;border-color:#dc2626}
+.btn-r:hover{background:#b91c1c}
+.tbl-outer{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed;min-width:1100px}
+thead th{background:#f9fafb;color:#6b7280;font-weight:600;font-size:10.5px;padding:7px 7px;text-align:left;cursor:pointer;user-select:none;white-space:nowrap;border-bottom:1px solid #e5e7eb;position:sticky;top:0}
 thead th:hover{color:#111;background:#f3f4f6}
-tbody td{padding:7px 8px;border-top:1px solid #f3f4f6;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tbody td{padding:6px 7px;border-top:1px solid #f3f4f6;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 tbody tr:hover td{background:#fafafa}
-.kd-green{background:#dcfce7;color:#14532d;font-size:11px;padding:3px 7px;border-radius:6px;display:inline-block;line-height:1.5;white-space:pre-line}
-.kd-red{background:#fee2e2;color:#7f1d1d;font-size:11px;padding:3px 7px;border-radius:6px;display:inline-block;line-height:1.5;white-space:pre-line}
-.kd-yellow{background:#fef9c3;color:#713f12;font-size:11px;padding:3px 7px;border-radius:6px;display:inline-block;line-height:1.5;white-space:pre-line}
-.kd-gray{background:#f3f4f6;color:#6b7280;font-size:11px;padding:3px 7px;border-radius:6px;display:inline-block;line-height:1.5;white-space:pre-line}
-.fit-best{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:#dcfce7;color:#14532d;font-weight:600}
-.fit-good{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:600}
-.fit-mid{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:#fef9c3;color:#713f12;font-weight:600}
-.fit-no{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600}
-.fit-out{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:#f3f4f6;color:#4b5563;font-weight:600}
+.kd-green{background:#dcfce7;color:#14532d;font-size:10px;padding:2px 6px;border-radius:5px;display:inline-block;line-height:1.5;white-space:pre-line}
+.kd-red{background:#fee2e2;color:#7f1d1d;font-size:10px;padding:2px 6px;border-radius:5px;display:inline-block;line-height:1.5;white-space:pre-line}
+.kd-yellow{background:#fef9c3;color:#713f12;font-size:10px;padding:2px 6px;border-radius:5px;display:inline-block;line-height:1.5;white-space:pre-line}
+.kd-gray{background:#f3f4f6;color:#6b7280;font-size:10px;padding:2px 6px;border-radius:5px;display:inline-block;line-height:1.5;white-space:pre-line}
+.macd-up{background:#dcfce7;color:#14532d;font-size:10px;padding:2px 6px;border-radius:5px;display:inline-block}
+.macd-dn{background:#fee2e2;color:#7f1d1d;font-size:10px;padding:2px 6px;border-radius:5px;display:inline-block}
+.macd-mid{background:#fef9c3;color:#713f12;font-size:10px;padding:2px 6px;border-radius:5px;display:inline-block}
+.macd-nil{background:#f3f4f6;color:#9ca3af;font-size:10px;padding:2px 6px;border-radius:5px;display:inline-block}
+.fit-best{display:inline-block;font-size:10px;padding:1px 7px;border-radius:10px;background:#dcfce7;color:#14532d;font-weight:600}
+.fit-good{display:inline-block;font-size:10px;padding:1px 7px;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:600}
+.fit-mid{display:inline-block;font-size:10px;padding:1px 7px;border-radius:10px;background:#fef9c3;color:#713f12;font-weight:600}
+.fit-no{display:inline-block;font-size:10px;padding:1px 7px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600}
+.fit-out{display:inline-block;font-size:10px;padding:1px 7px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600}
 .peh{color:#dc2626;font-weight:500}
-.ab{width:26px;height:26px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:#6b7280;font-size:13px}
+.up{color:#16a34a;font-weight:500}
+.dn{color:#dc2626;font-weight:500}
+.ab{width:25px;height:25px;border-radius:5px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:#6b7280;font-size:13px;flex-shrink:0}
 .ab:hover{background:#f3f4f6;color:#111}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
-.modal{background:#fff;border-radius:14px;padding:22px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
-.modal h2{font-size:15px;font-weight:600;margin-bottom:16px;color:#111}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
-.fi{display:flex;flex-direction:column;gap:4px}
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:flex-start;justify-content:center;z-index:100;padding:16px;overflow-y:auto}
+.modal{background:#fff;border-radius:14px;padding:0;width:100%;max-width:560px;margin:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);overflow:hidden}
+.modal-tabs{display:flex;border-bottom:1px solid #e5e7eb}
+.modal-tab{flex:1;padding:11px;font-size:12px;font-weight:600;text-align:center;cursor:pointer;color:#9ca3af;border-bottom:2px solid transparent;background:#fff}
+.modal-tab.active{color:#1d4ed8;border-bottom-color:#1d4ed8}
+.modal-body{padding:18px}
+.modal h2{font-size:14px;font-weight:700;margin-bottom:14px;color:#111}
+.sec-title{font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid #f3f4f6}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.fi{display:flex;flex-direction:column;gap:3px}
 .fi.full{grid-column:1/-1}
-.fi label{font-size:11px;color:#6b7280;font-weight:500}
-.fi input,.fi select,.fi textarea{height:32px;font-size:13px;padding:0 10px;border-radius:8px;border:1px solid #d1d5db;background:#fff;color:#111;font-family:inherit;outline:none}
-.fi input:focus,.fi select:focus,.fi textarea:focus{border-color:#3b82f6}
-.fi textarea{height:60px;padding:8px 10px;resize:none}
+.fi.third{grid-column:span 1}
+.fi label{font-size:10px;color:#6b7280;font-weight:600}
+.fi input,.fi select,.fi textarea{height:30px;font-size:12px;padding:0 9px;border-radius:7px;border:1px solid #d1d5db;background:#fff;color:#111;font-family:inherit;outline:none}
+.fi input:focus,.fi select:focus{border-color:#2563eb}
+.fi textarea{height:52px;padding:7px 9px;resize:none}
+.calc-row{background:#f9fafb;border-radius:8px;padding:8px 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.calc-item .cl{font-size:10px;color:#9ca3af}
+.calc-item .cv{font-size:14px;font-weight:700;color:#1d4ed8}
 .mf{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
-#toast{position:fixed;bottom:20px;right:20px;background:#16a34a;color:#fff;font-size:12px;padding:9px 16px;border-radius:8px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
+/* Log */
+.log-wrap{max-height:300px;overflow-y:auto}
+.log-item{padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:11px}
+.log-item:last-child{border-bottom:none}
+.log-time{color:#9ca3af;font-size:10px;margin-bottom:2px}
+.log-content{color:#374151}
+.log-stock{font-weight:700;color:#1d4ed8}
+/* Toast */
+#toast{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;font-size:12px;padding:9px 16px;border-radius:8px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
 #toast.show{opacity:1}
-.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;align-items:center}
-.legend span{font-size:11px;color:#6b7280;display:flex;align-items:center;gap:4px}
-.leg-dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;align-items:center;font-size:11px;color:#9ca3af}
+.ld{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:3px}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:10px">
-    <h1>&#x1F4CA; Ivy 自選股儀表板</h1>
+    <h1>📊 Ivy 自選股儀表板</h1>
     <span style="font-size:11px;background:#f3f4f6;padding:2px 8px;border-radius:10px;color:#6b7280" id="b-total">—</span>
   </div>
   <div class="topbar-right">
-    <span class="updated" id="last-update">資料更新：2026/05/22</span>
-    <button class="btn btn-g" onclick="forceSync()">&#x1F4BE; 儲存</button>
+    <span class="updated" id="last-update">—</span>
+    <button class="btn" onclick="openLog()">📋 變更紀錄</button>
+    <button class="btn btn-p" onclick="forceSync()">💾 儲存</button>
   </div>
 </div>
 
 <div class="main">
   <div class="stats">
     <div class="sc"><div class="l">追蹤檔數</div><div class="v" id="s-total">—</div></div>
-    <div class="sc"><div class="l">&#x2B50; 最適合</div><div class="v" id="s-best" style="color:#16a34a">—</div></div>
-    <div class="sc"><div class="l">&#x1F7E2; 適合</div><div class="v" id="s-good" style="color:#1d4ed8">—</div></div>
-    <div class="sc"><div class="l">&#x1F7E1; 中性觀察</div><div class="v" id="s-mid" style="color:#ca8a04">—</div></div>
-    <div class="sc"><div class="l">&#x26AA; 已出場</div><div class="v" id="s-out" style="color:#9ca3af">—</div></div>
+    <div class="sc"><div class="l">⭐ 最適合</div><div class="v" id="s-best" style="color:#16a34a">—</div></div>
+    <div class="sc"><div class="l">🟢 適合</div><div class="v" id="s-good" style="color:#1d4ed8">—</div></div>
+    <div class="sc"><div class="l">🟡 中性觀察</div><div class="v" id="s-mid" style="color:#ca8a04">—</div></div>
+    <div class="sc"><div class="l">⚪ 已出場</div><div class="v" id="s-out" style="color:#9ca3af">—</div></div>
   </div>
 
   <div class="toolbar">
-    <input type="text" id="q" placeholder="&#x1F50D; 搜尋代號/名稱..." oninput="render()">
+    <input type="text" id="q" placeholder="🔍 搜尋代號/名稱..." oninput="render()">
     <select id="ff" onchange="render()">
       <option value="">全部適合度</option>
       <option value="最適合">最適合</option>
@@ -95,36 +119,42 @@ tbody tr:hover td{background:#fafafa}
       <option value="已出場">已出場</option>
     </select>
     <select id="fi" onchange="render()"><option value="">全部產業</option></select>
-    <button class="btn btn-p" onclick="openAdd()">&#xff0b; 新增股票</button>
-    <button class="btn" onclick="exportCSV()">&#x2193; 匯出CSV</button>
-    <button class="btn" onclick="clearAll()" style="margin-left:auto;color:#dc2626;border-color:#fca5a5">清除所有資料</button>
+    <button class="btn btn-p" onclick="openAdd()">＋ 新增股票</button>
+    <button class="btn" onclick="exportCSV()">↓ 匯出CSV</button>
+    <button class="btn btn-r" onclick="clearAll()" style="margin-left:auto">清除資料</button>
   </div>
 
   <div class="legend">
-    <span>KD訊號：</span>
-    <span><span class="leg-dot" style="background:#dcfce7;border:1px solid #86efac"></span> 綠＝黃金交叉/低位反彈</span>
-    <span><span class="leg-dot" style="background:#fee2e2;border:1px solid #fca5a5"></span> 紅＝超賣死叉/高位警示</span>
-    <span><span class="leg-dot" style="background:#fef9c3;border:1px solid #fde047"></span> 黃＝中段觀察/高位強勢</span>
-    <span><span class="leg-dot" style="background:#f3f4f6;border:1px solid #d1d5db"></span> 灰＝資料待填</span>
+    KD訊號：
+    <span><span class="ld" style="background:#dcfce7"></span>綠＝黃金交叉</span>
+    <span><span class="ld" style="background:#fee2e2"></span>紅＝超賣死叉/超買警示</span>
+    <span><span class="ld" style="background:#fef9c3"></span>黃＝中段/高位觀察</span>
+    &nbsp;MACD：
+    <span><span class="ld" style="background:#dcfce7"></span>翻正↑</span>
+    <span><span class="ld" style="background:#fee2e2"></span>死叉↓</span>
+    <span><span class="ld" style="background:#fef9c3"></span>中性</span>
   </div>
 
   <div class="tbl-outer">
   <table>
     <thead>
       <tr>
-        <th style="width:46px" onclick="sb('code')">代號 &#x21F5;</th>
-        <th style="width:60px" onclick="sb('name')">名稱</th>
-        <th style="width:80px" onclick="sb('sector')">產業</th>
-        <th style="width:52px" onclick="sb('price')">現價 &#x21F5;</th>
-        <th style="width:42px" onclick="sb('pe')">本益比 &#x21F5;</th>
-        <th style="width:40px" onclick="sb('eps')">EPS</th>
-        <th style="width:38px" onclick="sb('roe')">ROE%</th>
-        <th style="width:36px" onclick="sb('gm')">毛利%</th>
-        <th style="width:110px">護城河</th>
-        <th style="width:120px" onclick="sb('kd_k')">KD技術訊號 &#x21F5;</th>
-        <th style="width:76px">買點區間</th>
-        <th style="width:64px" onclick="sb('fit')">適合度 &#x21F5;</th>
-        <th style="width:52px">操作</th>
+        <th style="width:44px" onclick="sb('code')">代號↕</th>
+        <th style="width:58px" onclick="sb('name')">名稱</th>
+        <th style="width:70px" onclick="sb('sector')">產業</th>
+        <th style="width:50px" onclick="sb('price')">現價↕</th>
+        <th style="width:50px" onclick="sb('rev_q')">最新營收↕</th>
+        <th style="width:44px" onclick="sb('rev_yoy')">營收YoY↕</th>
+        <th style="width:38px" onclick="sb('gm_calc')">毛利率↕</th>
+        <th style="width:38px" onclick="sb('pe_ttm')">本益比↕</th>
+        <th style="width:36px" onclick="sb('roe')">ROE%↕</th>
+        <th style="width:36px" onclick="sb('debt_ratio')">負債%↕</th>
+        <th style="width:96px">護城河</th>
+        <th style="width:105px" onclick="sb('kd_k')">KD技術訊號↕</th>
+        <th style="width:72px">MACD訊號</th>
+        <th style="width:68px">買點區間</th>
+        <th style="width:60px" onclick="sb('fit')">適合度↕</th>
+        <th style="width:48px">操作</th>
       </tr>
     </thead>
     <tbody id="tb"></tbody>
@@ -134,111 +164,202 @@ tbody tr:hover td{background:#fafafa}
 
 <div id="toast"></div>
 
+<!-- Main Modal -->
 <div id="overlay" style="display:none" class="overlay" onclick="bgClose(event)">
   <div class="modal">
-    <h2 id="mt">新增股票</h2>
-    <div class="fg">
-      <div class="fi"><label>代號 *</label><input id="fc" placeholder="2330"></div>
-      <div class="fi"><label>名稱 *</label><input id="fn" placeholder="台積電"></div>
-      <div class="fi full"><label>產業/題材</label><input id="fsc2" placeholder="例：ABF載板/AI伺服器"></div>
-      <div class="fi"><label>現價 (TWD)</label><input id="fp" type="number" step="0.5"></div>
-      <div class="fi"><label>本益比</label><input id="fpe" type="number" step="0.1"></div>
-      <div class="fi"><label>EPS (元)</label><input id="fe" type="number" step="0.01"></div>
-      <div class="fi"><label>ROE (%)</label><input id="fr" type="number" step="0.1"></div>
-      <div class="fi"><label>毛利率 (%)</label><input id="fg2" type="number" step="0.1"></div>
-      <div class="fi"><label>K值 (0~100)</label><input id="fk" type="number" step="0.1" min="0" max="100"></div>
-      <div class="fi"><label>D值 (0~100)</label><input id="fd" type="number" step="0.1" min="0" max="100"></div>
-      <div class="fi full"><label>護城河</label><input id="fmw" placeholder="例：台積電持股41%，MEMS製程優勢"></div>
-      <div class="fi full"><label>買點區間</label><input id="fbz" placeholder="例：2100~2200"></div>
-      <div class="fi full"><label>適合度</label>
-        <select id="ffit">
-          <option value="最適合">最適合</option>
-          <option value="適合">適合</option>
-          <option value="中性觀察">中性觀察</option>
-          <option value="勿追">勿追</option>
-          <option value="已出場">已出場</option>
-        </select>
-      </div>
-      <div class="fi full"><label>備註（風險/觀察重點）</label><textarea id="fnt" placeholder="自由填寫..."></textarea></div>
+    <div class="modal-tabs">
+      <div class="modal-tab active" id="tab-basic" onclick="switchTab('basic')">基本資料</div>
+      <div class="modal-tab" id="tab-fin" onclick="switchTab('fin')">財報數字</div>
     </div>
-    <div class="mf">
-      <button class="btn" onclick="closeM()">取消</button>
-      <button class="btn btn-p" onclick="saveS()">&#x2713; 儲存</button>
+    <div class="modal-body">
+      <div id="pane-basic">
+        <div class="sec-title">識別與狀態</div>
+        <div class="fg">
+          <div class="fi"><label>代號 *</label><input id="fc" placeholder="2330"></div>
+          <div class="fi"><label>名稱 *</label><input id="fn" placeholder="台積電"></div>
+          <div class="fi full"><label>產業/題材</label><input id="fsc2" placeholder="例：ABF載板/AI伺服器"></div>
+          <div class="fi"><label>現價 (TWD)</label><input id="fp" type="number" step="0.5"></div>
+          <div class="fi"><label>適合度</label>
+            <select id="ffit">
+              <option value="最適合">最適合</option>
+              <option value="適合">適合</option>
+              <option value="中性觀察">中性觀察</option>
+              <option value="勿追">勿追</option>
+              <option value="已出場">已出場</option>
+            </select>
+          </div>
+        </div>
+        <div class="sec-title">技術面</div>
+        <div class="fg">
+          <div class="fi"><label>K值 (0~100)</label><input id="fk" type="number" step="0.1" min="0" max="100"></div>
+          <div class="fi"><label>D值 (0~100)</label><input id="fd" type="number" step="0.1" min="0" max="100"></div>
+          <div class="fi"><label>MACD方向</label>
+            <select id="fmacd">
+              <option value="">待填</option>
+              <option value="翻正↑">翻正↑</option>
+              <option value="零軸以上↑">零軸以上↑</option>
+              <option value="柱縮小→">柱縮小→</option>
+              <option value="零軸以下→">零軸以下→</option>
+              <option value="死叉↓">死叉↓</option>
+              <option value="翻負↓">翻負↓</option>
+            </select>
+          </div>
+          <div class="fi"><label>OSC狀態</label>
+            <select id="fosc">
+              <option value="">待填</option>
+              <option value="持續放大↑">持續放大↑</option>
+              <option value="縮小收斂→">縮小收斂→</option>
+              <option value="翻正↑">翻正↑</option>
+              <option value="翻負↓">翻負↓</option>
+              <option value="持續縮小↓">持續縮小↓</option>
+            </select>
+          </div>
+          <div class="fi full"><label>買點區間</label><input id="fbz" placeholder="例：2100~2200"></div>
+        </div>
+        <div class="sec-title">護城河與備註</div>
+        <div class="fg">
+          <div class="fi full"><label>護城河</label><input id="fmw" placeholder="例：台積電持股41%，MEMS製程優勢"></div>
+          <div class="fi full"><label>備註（風險/觀察重點）</label><textarea id="fnt" placeholder="自由填寫..."></textarea></div>
+        </div>
+      </div>
+
+      <div id="pane-fin" style="display:none">
+        <div class="sec-title">損益表（百萬元）— 從App直接填入</div>
+        <div class="fg">
+          <div class="fi"><label>最新季別</label><input id="fqtr" placeholder="例：2026Q1"></div>
+          <div class="fi"><label>營業收入</label><input id="frev" type="number" placeholder="1134103"></div>
+          <div class="fi"><label>營業毛利</label><input id="fgp" type="number" placeholder="751295"></div>
+          <div class="fi"><label>營業利益</label><input id="fop" type="number" placeholder="658966"></div>
+          <div class="fi"><label>稅後純益</label><input id="fni" type="number" placeholder="572801"></div>
+          <div class="fi"><label>EPS 單季（元）</label><input id="feps1" type="number" step="0.01" placeholder="22.08"></div>
+        </div>
+        <div class="sec-title">過去三季EPS（用於TTM本益比）</div>
+        <div class="fg">
+          <div class="fi"><label>上季EPS</label><input id="feps2" type="number" step="0.01" placeholder="19.51"></div>
+          <div class="fi"><label>前兩季EPS</label><input id="feps3" type="number" step="0.01" placeholder="17.44"></div>
+          <div class="fi"><label>前三季EPS</label><input id="feps4" type="number" step="0.01" placeholder="15.36"></div>
+          <div class="fi"><label>去年同季EPS（YoY用）</label><input id="fepsly" type="number" step="0.01" placeholder="13.5"></div>
+        </div>
+        <div class="sec-title">資產負債表</div>
+        <div class="fg">
+          <div class="fi"><label>資產總計</label><input id="fasset" type="number" placeholder="8660389"></div>
+          <div class="fi"><label>負債總計</label><input id="fdebt" type="number" placeholder="2728561"></div>
+          <div class="fi"><label>每股淨值（元）</label><input id="fbv" type="number" step="0.01" placeholder="227.17"></div>
+          <div class="fi"><label>ROE (%)</label><input id="froe" type="number" step="0.1" placeholder="38.5"></div>
+        </div>
+        <div class="sec-title">去年同季營收（計算YoY）</div>
+        <div class="fg">
+          <div class="fi full"><label>去年同季營業收入</label><input id="frevly" type="number" placeholder="592642"></div>
+        </div>
+        <div class="calc-row" id="calc-row">
+          <div class="calc-item"><div class="cl">毛利率</div><div class="cv" id="c-gm">—</div></div>
+          <div class="calc-item"><div class="cl">TTM本益比</div><div class="cv" id="c-pe">—</div></div>
+          <div class="calc-item"><div class="cl">負債比</div><div class="cv" id="c-debt">—</div></div>
+          <div class="calc-item"><div class="cl">營收YoY</div><div class="cv" id="c-yoy">—</div></div>
+        </div>
+      </div>
+
+      <div class="mf">
+        <button class="btn" onclick="closeM()">取消</button>
+        <button class="btn btn-p" onclick="saveS()">✓ 儲存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Log Modal -->
+<div id="log-overlay" style="display:none" class="overlay" onclick="if(event.target===this)closeLog()">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-tabs">
+      <div class="modal-tab active">📋 變更紀錄</div>
+      <div class="modal-tab" style="cursor:pointer;color:#dc2626" onclick="clearLog()">清除紀錄</div>
+    </div>
+    <div class="modal-body">
+      <div class="log-wrap" id="log-wrap"></div>
+    </div>
+    <div style="padding:0 18px 16px;display:flex;justify-content:flex-end">
+      <button class="btn" onclick="closeLog()">關閉</button>
     </div>
   </div>
 </div>
 
 <script>
-const LSKEY='ivy_stocks_v4';
-let stocks=[],eidx=null,sk='',sd=1;
+const LSKEY='ivy_v5';
+const LOGKEY='ivy_log_v5';
+let stocks=[],log=[],eidx=null,sk='',sd=1,curTab='basic';
 
 const DEFAULT=[
-{code:'2330',name:'台積電',sector:'先進製程',price:2255,pe:30.3,eps:94.3,roe:38.5,gm:66.2,kd_k:null,kd_d:null,moat:'全球無可替代，3nm/2nm技術壁壘',buyzone:'2100~2200',fit:'最適合',note:'250萬核心標的'},
-{code:'0050',name:'元大台灣50',sector:'ETF',price:97.3,pe:null,eps:null,roe:null,gm:null,kd_k:null,kd_d:null,moat:'追蹤加權指數，分散風險',buyzone:'核心持倉',fit:'最適合',note:'250萬核心ETF'},
-{code:'2884',name:'玉山金',sector:'金融',price:null,pe:null,eps:null,roe:null,gm:null,kd_k:null,kd_d:null,moat:'品牌+客戶黏著度高',buyzone:'持有',fit:'適合',note:'持有中'},
-{code:'5347',name:'世界先進',sector:'成熟製程',price:174.5,pe:40.6,eps:4.3,roe:8.5,gm:29.3,kd_k:71.8,kd_d:72.5,moat:'台積電富爸爸，非中系稀缺',buyzone:'155~165',fit:'中性觀察',note:'隔日沖標的'},
-{code:'8150',name:'南茂',sector:'IC封測',price:92.7,pe:132,eps:0.7,roe:5.2,gm:14.3,kd_k:null,kd_d:null,moat:'記憶體封測全球前二，漲價效益',buyzone:'80~88',fit:'中性觀察',note:'隔日沖轉機股'},
-{code:'2317',name:'鴻海',sector:'AI伺服器',price:250,pe:14.1,eps:17.79,roe:12.5,gm:6.2,kd_k:null,kd_d:null,moat:'AI伺服器全球最大代工',buyzone:'重找買點',fit:'已出場',note:'248已出場'},
-{code:'3374',name:'精材',sector:'IC封測',price:202,pe:23.8,eps:8.5,roe:18.5,gm:28.3,kd_k:81.1,kd_d:64.4,moat:'台積電持股41%背書，MEMS製程',buyzone:'重找買點',fit:'已出場',note:'已出場'},
-{code:'3037',name:'欣興',sector:'ABF載板',price:970,pe:128,eps:4.38,roe:12.5,gm:14.2,kd_k:33,kd_d:42.6,moat:'ABF載板全球龍頭，HBM技術壁壘',buyzone:'850~870',fit:'已出場',note:'874已出場'},
-{code:'6789',name:'采鈺',sector:'CoPoS/矽光子',price:603,pe:150,eps:4.01,roe:18.2,gm:28.5,kd_k:88,kd_d:81,moat:'台積電生態系獨佔，CoPoS技術',buyzone:'570~585',fit:'勿追',note:'EPS衰退，估值150倍'},
-{code:'3105',name:'穩懋',sector:'GaAs磊晶',price:524,pe:51.4,eps:10.2,roe:15.8,gm:32.5,kd_k:16.7,kd_d:23.6,moat:'砷化鎵磊晶龍頭，全球市占高',buyzone:'490~515',fit:'適合',note:'KD超賣，隔日沖觀察'},
-{code:'4766',name:'南寶',sector:'AI封裝材料',price:362,pe:16.1,eps:22.5,roe:22.4,gm:35.2,kd_k:39.5,kd_d:45.7,moat:'利基市場龍頭，客戶黏著度高',buyzone:'355~365',fit:'適合',note:'財務穩健'},
-{code:'4763',name:'富采',sector:'LED/光通訊',price:74.6,pe:23.3,eps:3.2,roe:12.3,gm:22.1,kd_k:null,kd_d:null,moat:'LED封測利基，光通訊題材',buyzone:'74~77',fit:'中性觀察',note:'毛利率偏低'},
-{code:'6669',name:'緯穎',sector:'AI伺服器ODM',price:4860,pe:29.5,eps:165,roe:55.8,gm:12.5,kd_k:null,kd_d:null,moat:'AI伺服器龍頭，微軟/Google鎖定',buyzone:'4600以下',fit:'勿追',note:'高位KD超買'},
-{code:'6670',name:'漢唐',sector:'廠務工程',price:978,pe:25.4,eps:38.5,roe:28.5,gm:18.2,kd_k:null,kd_d:null,moat:'台積電廠務獨家承包，難以替代',buyzone:'950~970',fit:'最適合',note:'AI篩選第一優先'},
-{code:'2327',name:'國巨',sector:'被動元件',price:629,pe:16.8,eps:23.5,roe:22.5,gm:38.5,kd_k:84.3,kd_d:80.9,moat:'全球MLCC前三大，漲價定價能力',buyzone:'370~385',fit:'最適合',note:'AI篩選第二優先'},
-{code:'3189',name:'景碩',sector:'HDI載板',price:554,pe:38.6,eps:12.5,roe:18.5,gm:22.8,kd_k:null,kd_d:null,moat:'ABF第二，私募引進大客戶',buyzone:'450~470',fit:'適合',note:'目標價650'},
-{code:'2449',name:'京元電子',sector:'IC測試/HBM',price:354,pe:28.3,eps:12.5,roe:15.2,gm:28.5,kd_k:null,kd_d:null,moat:'HBM測試需求暴增，台積電指定廠',buyzone:'330~340',fit:'適合',note:'AI篩選第四優先'},
-{code:'2454',name:'聯發科',sector:'AI手機晶片',price:3860,pe:56.1,eps:65.98,roe:28.5,gm:48.5,kd_k:null,kd_d:null,moat:'AI手機龍頭，OpenAI戰略夥伴',buyzone:'2900~3000',fit:'適合',note:'PE56倍偏高'},
-{code:'3036',name:'文曄',sector:'IC通路',price:275.5,pe:47.1,eps:5.85,roe:8.5,gm:2.8,kd_k:null,kd_d:null,moat:'全球前三大IC通路，歐美版圖擴張',buyzone:'248~258',fit:'中性觀察',note:'高負債72%'},
-{code:'4958',name:'臻鼎-KY',sector:'PCB/AI載板',price:439,pe:58.9,eps:6.91,roe:12.5,gm:19.8,kd_k:47.2,kd_d:48.1,moat:'AI相關PCB龍頭，軟板+載板雙題材',buyzone:'410~422',fit:'適合',note:'等KD交叉確認'},
-{code:'2303',name:'聯電',sector:'成熟製程',price:111,pe:24.4,eps:4.28,roe:10.5,gm:32.5,kd_k:86.6,kd_d:86.6,moat:'成熟製程全球前三，美中受惠',buyzone:'92~98',fit:'適合',note:'殖利率穩健'},
-{code:'3035',name:'智原',sector:'ASIC設計',price:208.5,pe:63.3,eps:3.28,roe:8.2,gm:38.5,kd_k:null,kd_d:null,moat:'4奈米ASIC確立，DIS業務毛利近100%',buyzone:'188~198',fit:'中性觀察',note:'ROE偏低，EPS衰退'},
-{code:'2345',name:'智邦',sector:'AI網通',price:2525,pe:33.7,eps:74.8,roe:32.5,gm:42.5,kd_k:null,kd_d:null,moat:'AI網通交換器全球龍頭，雲端鎖定',buyzone:'2300~2400',fit:'適合',note:'法人大賣超注意'},
-{code:'8358',name:'金居',sector:'ABF材料',price:460,pe:25.8,eps:18.5,roe:18.5,gm:22.5,kd_k:52.3,kd_d:51.7,moat:'ABF材料稀缺，AI伺服器直接受惠',buyzone:'等處置解除',fit:'中性觀察',note:'處置股！等解除後才可進場'},
-{code:'3163',name:'波若威',sector:'CPO/矽光子',price:1035,pe:296,eps:3.5,roe:12.5,gm:17.5,kd_k:null,kd_d:null,moat:'CPO技術全球領先，矽光子7劍客',buyzone:'850~950',fit:'勿追',note:'PE296倍嚴重過熱'},
-{code:'3008',name:'大立光',sector:'精密光學',price:3540,pe:17.5,eps:162.5,roe:28.5,gm:55.2,kd_k:null,kd_d:null,moat:'全球高階手機鏡頭龍頭，毛利55%',buyzone:'2650~2750',fit:'最適合',note:'財務最優質，PE歷史低位'},
-{code:'2356',name:'英業達',sector:'AI伺服器ODM',price:55,pe:18.5,eps:2.85,roe:15.2,gm:8.2,kd_k:null,kd_d:null,moat:'GB200主力廠，NVIDIA深度合作',buyzone:'46~50',fit:'適合',note:'殖利率4.8%穩健'},
-{code:'3481',name:'群創',sector:'OLED/面板',price:37.5,pe:44,eps:0.85,roe:5.2,gm:12.5,kd_k:null,kd_d:null,moat:'OLED大尺寸布局，IT面板需求',buyzone:'33~36',fit:'中性觀察',note:'景氣循環高度敏感'},
-{code:'2301',name:'光寶科',sector:'AI電源',price:220,pe:23.9,eps:8.85,roe:4.2,gm:21.7,kd_k:null,kd_d:null,moat:'GB200/300電源龍頭，NVIDIA合作深',buyzone:'195~210',fit:'中性觀察',note:'ROE僅4.2%，毛利下滑'},
-{code:'8155',name:'博智',sector:'PCB/HDI',price:411,pe:22.2,eps:18.5,roe:12.5,gm:18.5,kd_k:23.9,kd_d:39.4,moat:'PCB龍頭之一，外資持續買超',buyzone:'390~410',fit:'適合',note:'KD超賣，等黃金交叉'},
-{code:'6257',name:'矽格',sector:'IC封測',price:218.5,pe:26.7,eps:8.18,roe:4.6,gm:31.7,kd_k:78.7,kd_d:79.2,moat:'毛利連3季提升，現金流強勁',buyzone:'210~215',fit:'最適合',note:'存貨極低，財報品質優異'},
-{code:'8261',name:'富鼎',sector:'IC通路/功率半導體',price:149,pe:23.8,eps:null,roe:13,gm:38.1,kd_k:77.2,kd_d:70.5,moat:'毛利38%/負債11%，財務極健康',buyzone:'135~138',fit:'最適合',note:'等回調135~138絕佳進場'},
-{code:'5425',name:'台半',sector:'功率半導體',price:86.9,pe:29,eps:null,roe:2.2,gm:31.3,kd_k:78.4,kd_d:72.3,moat:'營收歷史新高，毛利持續提升',buyzone:'80~82',fit:'中性觀察',note:'ROE偏低，等回調'},
-{code:'2481',name:'強茂',sector:'功率半導體',price:133,pe:44,eps:null,roe:2,gm:32.7,kd_k:78.6,kd_d:72.6,moat:'毛利32%穩定，功率半導體題材',buyzone:'125~128',fit:'中性觀察',note:'PE44倍偏高'},
-{code:'6147',name:'頎邦',sector:'IC封測',price:215.5,pe:54,eps:null,roe:0.9,gm:23.5,kd_k:76.8,kd_d:75.4,moat:'負債僅15.5%，本業改善持續',buyzone:'190~200',fit:'中性觀察',note:'等主力轉買超'},
-{code:'3711',name:'日月光投控',sector:'IC封測龍頭',price:561,pe:40,eps:null,roe:4.1,gm:20.1,kd_k:null,kd_d:null,moat:'IC封測全球龍頭，FOPLP/3DIC技術',buyzone:'470~480',fit:'適合',note:'EPS成長85%，等回調'},
+{code:'2330',name:'台積電',sector:'先進製程',price:2255,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'全球無可替代，3nm/2nm技術壁壘',buyzone:'2100~2200',note:'250萬核心標的',qtr:'2026Q1',rev_q:1134103,gp:751295,op:658966,ni:572801,eps1:22.08,eps2:19.51,eps3:17.44,eps4:15.36,epsly:13.5,asset:8660389,debt:2728561,bv:227.17,roe:38.5,revly:592642},
+{code:'0050',name:'元大台灣50',sector:'ETF',price:97.3,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'追蹤加權指數，分散風險',buyzone:'核心持倉',note:'250萬核心ETF',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:null,revly:null},
+{code:'2884',name:'玉山金',sector:'金融',price:null,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'品牌+客戶黏著度高',buyzone:'持有',note:'持有中',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:null,revly:null},
+{code:'5347',name:'世界先進',sector:'成熟製程',price:174.5,fit:'中性觀察',kd_k:71.8,kd_d:72.5,macd:'',osc:'',moat:'台積電富爸爸，非中系稀缺',buyzone:'155~165',note:'隔日沖標的',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:8.5,revly:null},
+{code:'8150',name:'南茂',sector:'IC封測',price:92.7,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'記憶體封測全球前二，漲價效益',buyzone:'80~88',note:'隔日沖轉機股',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.72,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:5.2,revly:null},
+{code:'2317',name:'鴻海',sector:'AI伺服器',price:250,fit:'已出場',kd_k:null,kd_d:null,macd:'',osc:'',moat:'AI伺服器全球最大代工',buyzone:'重找買點',note:'248已出場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:4.5,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
+{code:'3374',name:'精材',sector:'IC封測',price:202,fit:'已出場',kd_k:81.1,kd_d:64.4,macd:'',osc:'',moat:'台積電持股41%背書，MEMS製程',buyzone:'重找買點',note:'已出場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:2.1,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:18.5,revly:null},
+{code:'3037',name:'欣興',sector:'ABF載板',price:970,fit:'已出場',kd_k:33,kd_d:42.6,macd:'',osc:'',moat:'ABF載板全球龍頭，HBM技術壁壘',buyzone:'850~870',note:'874已出場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:3.28,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
+{code:'6789',name:'采鈺',sector:'CoPoS/矽光子',price:603,fit:'勿追',kd_k:88,kd_d:81,macd:'',osc:'',moat:'台積電生態系獨佔，CoPoS技術',buyzone:'570~585',note:'EPS衰退，估值150倍',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:4.01,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:18.2,revly:null},
+{code:'3105',name:'穩懋',sector:'GaAs磊晶',price:524,fit:'適合',kd_k:16.7,kd_d:23.6,macd:'',osc:'',moat:'砷化鎵磊晶龍頭，全球市占高',buyzone:'490~515',note:'KD超賣，隔日沖觀察',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:15.8,revly:null},
+{code:'4766',name:'南寶',sector:'AI封裝材料',price:362,fit:'適合',kd_k:39.5,kd_d:45.7,macd:'',osc:'',moat:'利基市場龍頭，客戶黏著度高',buyzone:'355~365',note:'財務穩健',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:22.4,revly:null},
+{code:'4763',name:'富采',sector:'LED/光通訊',price:74.6,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'LED封測利基，光通訊題材',buyzone:'74~77',note:'毛利率偏低',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.3,revly:null},
+{code:'6669',name:'緯穎',sector:'AI伺服器ODM',price:4860,fit:'勿追',kd_k:null,kd_d:null,macd:'',osc:'',moat:'AI伺服器龍頭，微軟/Google鎖定',buyzone:'4600以下',note:'高位KD超買',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:48.5,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:55.8,revly:null},
+{code:'6670',name:'漢唐',sector:'廠務工程',price:978,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'台積電廠務獨家承包，難以替代',buyzone:'950~970',note:'AI篩選第一優先',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:10.2,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:28.5,revly:null},
+{code:'2327',name:'國巨',sector:'被動元件',price:629,fit:'最適合',kd_k:84.3,kd_d:80.9,macd:'',osc:'',moat:'全球MLCC前三大，漲價定價能力',buyzone:'370~385',note:'AI篩選第二優先',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:6.8,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:22.5,revly:null},
+{code:'3189',name:'景碩',sector:'HDI載板',price:554,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'ABF第二，私募引進大客戶',buyzone:'450~470',note:'目標價650',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:3.28,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:18.5,revly:null},
+{code:'2449',name:'京元電子',sector:'IC測試/HBM',price:354,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'HBM測試需求暴增，台積電指定廠',buyzone:'330~340',note:'AI篩選第四優先',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:3.8,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:15.2,revly:null},
+{code:'2454',name:'聯發科',sector:'AI手機晶片',price:3860,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'AI手機龍頭，OpenAI戰略夥伴',buyzone:'2900~3000',note:'PE56倍偏高',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:18.5,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:28.5,revly:null},
+{code:'3036',name:'文曄',sector:'IC通路',price:275.5,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'全球前三大IC通路，歐美版圖擴張',buyzone:'248~258',note:'高負債72%',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.68,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:8.5,revly:null},
+{code:'4958',name:'臻鼎-KY',sector:'PCB/AI載板',price:439,fit:'適合',kd_k:47.2,kd_d:48.1,macd:'',osc:'',moat:'AI相關PCB龍頭，軟板+載板雙題材',buyzone:'410~422',note:'等KD交叉確認',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.95,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
+{code:'2303',name:'聯電',sector:'成熟製程',price:111,fit:'適合',kd_k:86.6,kd_d:86.6,macd:'',osc:'',moat:'成熟製程全球前三，美中受惠',buyzone:'92~98',note:'殖利率穩健',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.15,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:10.5,revly:null},
+{code:'3035',name:'智原',sector:'ASIC設計',price:208.5,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'4奈米ASIC確立，DIS業務毛利近100%',buyzone:'188~198',note:'ROE偏低，EPS衰退',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.92,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:8.2,revly:null},
+{code:'2345',name:'智邦',sector:'AI網通',price:2525,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'AI網通交換器全球龍頭，雲端鎖定',buyzone:'2300~2400',note:'法人大賣超注意',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:21.5,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:32.5,revly:null},
+{code:'8358',name:'金居',sector:'ABF材料',price:460,fit:'中性觀察',kd_k:52.3,kd_d:51.7,macd:'',osc:'',moat:'ABF材料稀缺，AI伺服器直接受惠',buyzone:'等處置解除',note:'處置股！等解除後才可進場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:2.06,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:18.5,revly:null},
+{code:'3163',name:'波若威',sector:'CPO/矽光子',price:1035,fit:'勿追',kd_k:null,kd_d:null,macd:'',osc:'',moat:'CPO技術全球領先，矽光子7劍客',buyzone:'850~950',note:'PE296倍嚴重過熱',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.2,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
+{code:'3008',name:'大立光',sector:'精密光學',price:3540,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'全球高階手機鏡頭龍頭，毛利55%',buyzone:'2650~2750',note:'財務最優質，PE歷史低位',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:45.2,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:28.5,revly:null},
+{code:'2356',name:'英業達',sector:'AI伺服器ODM',price:55,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'GB200主力廠，NVIDIA深度合作',buyzone:'46~50',note:'殖利率4.8%穩健',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.82,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:15.2,revly:null},
+{code:'3481',name:'群創',sector:'OLED/面板',price:37.5,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'OLED大尺寸布局，IT面板需求',buyzone:'33~36',note:'景氣循環高度敏感',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.28,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:5.2,revly:null},
+{code:'2301',name:'光寶科',sector:'AI電源',price:220,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'GB200/300電源龍頭，NVIDIA合作深',buyzone:'195~210',note:'ROE僅4.2%，毛利下滑',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:2.28,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:4.2,revly:null},
+{code:'8155',name:'博智',sector:'PCB/HDI',price:411,fit:'適合',kd_k:23.9,kd_d:39.4,macd:'',osc:'',moat:'PCB龍頭之一，外資持續買超',buyzone:'390~410',note:'KD超賣，等黃金交叉',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:5.2,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
+{code:'6257',name:'矽格',sector:'IC封測',price:218.5,fit:'最適合',kd_k:78.7,kd_d:79.2,macd:'',osc:'',moat:'毛利連3季提升，現金流強勁',buyzone:'210~215',note:'存貨極低，財報品質優異',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:2.1,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:4.6,revly:null},
+{code:'8261',name:'富鼎',sector:'IC通路/功率半導體',price:149,fit:'最適合',kd_k:77.2,kd_d:70.5,macd:'',osc:'',moat:'毛利38%/負債11%，財務極健康',buyzone:'135~138',note:'等回調135~138絕佳進場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.57,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:13,revly:null},
+{code:'5425',name:'台半',sector:'功率半導體',price:86.9,fit:'中性觀察',kd_k:78.4,kd_d:72.3,macd:'',osc:'',moat:'營收歷史新高，毛利持續提升',buyzone:'80~82',note:'ROE偏低，等回調',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.7,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:2.2,revly:null},
+{code:'2481',name:'強茂',sector:'功率半導體',price:133,fit:'中性觀察',kd_k:78.6,kd_d:72.6,macd:'',osc:'',moat:'毛利32%穩定，功率半導體題材',buyzone:'125~128',note:'PE44倍偏高',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.75,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:2,revly:null},
+{code:'6147',name:'頎邦',sector:'IC封測',price:215.5,fit:'中性觀察',kd_k:76.8,kd_d:75.4,macd:'',osc:'',moat:'負債僅15.5%，本業改善持續',buyzone:'190~200',note:'等主力轉買超',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.59,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:0.9,revly:null},
+{code:'3711',name:'日月光投控',sector:'IC封測龍頭',price:561,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'IC封測全球龍頭，FOPLP/3DIC技術',buyzone:'470~480',note:'EPS成長85%，等回調',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:3.24,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:4.1,revly:null},
 ];
 
+function calcDerived(s){
+  const n=v=>(!v||isNaN(v))?null:Number(v);
+  const rev=n(s.rev_q),gp=n(s.gp),asset=n(s.asset),debt=n(s.debt),price=n(s.price);
+  const eps1=n(s.eps1),eps2=n(s.eps2),eps3=n(s.eps3),eps4=n(s.eps4),revly=n(s.revly);
+  s.gm_calc=rev&&gp?Math.round(gp/rev*1000)/10:null;
+  const ttm=[eps1,eps2,eps3,eps4].filter(x=>x!==null).reduce((a,b)=>a+b,0);
+  const validEps=[eps1,eps2,eps3,eps4].filter(x=>x!==null).length;
+  s.pe_ttm=price&&validEps===4?Math.round(price/ttm*10)/10:null;
+  s.debt_ratio=asset&&debt?Math.round(debt/asset*1000)/10:null;
+  s.rev_yoy=rev&&revly?Math.round((rev-revly)/revly*1000)/10:null;
+  return s;
+}
+
 function kdSignal(k,d){
-  if(k===null||k===undefined)return {cls:'kd-gray',txt:'資料待填\n—'};
-  const K=parseFloat(k),D2=d!==null&&d!==undefined?parseFloat(d):null;
+  if(k===null||k===undefined)return{cls:'kd-gray',txt:'資料待填\n—'};
+  const K=parseFloat(k),D2=d!=null?parseFloat(d):null;
   const kv='K='+K.toFixed(0)+(D2!==null?' D='+D2.toFixed(0):'');
-  if(K<20){
-    if(D2!==null&&K<D2)return {cls:'kd-red',txt:kv+'\n✕ 超賣死叉'};
-    return {cls:'kd-red',txt:kv+'\n超賣區'};
-  }
-  if(K<35){
-    if(D2!==null&&K>D2)return {cls:'kd-green',txt:kv+'\n低位黃金交叉'};
-    return {cls:'kd-yellow',txt:kv+'\n低位反彈中'};
-  }
-  if(K<55){
-    if(D2!==null&&K<D2)return {cls:'kd-red',txt:kv+'\n✕ 死叉整理'};
-    if(D2!==null&&K>D2)return {cls:'kd-yellow',txt:kv+'\nK值中段\nMACD轉正觀察'};
-    return {cls:'kd-yellow',txt:kv+'\nK值中段'};
-  }
-  if(K<75){
-    if(D2!==null&&K>D2)return {cls:'kd-green',txt:kv+'\n✓ 黃金交叉·偏多'};
-    if(D2!==null&&K<D2)return {cls:'kd-red',txt:kv+'\n✕ 死叉MACD翻負'};
-    return {cls:'kd-yellow',txt:kv+'\nKD中段向上·偏多'};
-  }
-  if(K<=85){
-    if(D2!==null&&K>D2)return {cls:'kd-green',txt:kv+'\n✓ 黃金交叉·高位'};
-    return {cls:'kd-yellow',txt:kv+'\nKD高位\n強勢不追'};
-  }
-  if(D2!==null&&K>D2)return {cls:'kd-yellow',txt:kv+'\n黃金交叉·高位\n注意股'};
-  return {cls:'kd-red',txt:kv+'\n⚠ 超買高位\n注意回調'};
+  if(K<20){if(D2!==null&&K<D2)return{cls:'kd-red',txt:kv+'\n✕ 超賣死叉'};return{cls:'kd-red',txt:kv+'\n超賣區'};}
+  if(K<35){if(D2!==null&&K>D2)return{cls:'kd-green',txt:kv+'\n低位黃金交叉'};return{cls:'kd-yellow',txt:kv+'\n低位反彈中'};}
+  if(K<55){if(D2!==null&&K<D2)return{cls:'kd-red',txt:kv+'\n✕ 死叉整理'};if(D2!==null&&K>D2)return{cls:'kd-yellow',txt:kv+'\nK值中段\nMACD轉正觀察'};return{cls:'kd-yellow',txt:kv+'\nK值中段'};}
+  if(K<75){if(D2!==null&&K>D2)return{cls:'kd-green',txt:kv+'\n✓ 黃金交叉·偏多'};if(D2!==null&&K<D2)return{cls:'kd-red',txt:kv+'\n✕ 死叉MACD翻負'};return{cls:'kd-yellow',txt:kv+'\nKD中段向上·偏多'};}
+  if(K<=85){if(D2!==null&&K>D2)return{cls:'kd-green',txt:kv+'\n✓ 黃金交叉·高位'};return{cls:'kd-yellow',txt:kv+'\nKD高位\n強勢不追'};}
+  if(D2!==null&&K>D2)return{cls:'kd-yellow',txt:kv+'\n黃金交叉·高位\n注意股'};
+  return{cls:'kd-red',txt:kv+'\n⚠ 超買高位\n注意回調'};
+}
+
+function macdTag(macd,osc){
+  if(!macd&&!osc)return '<span class="macd-nil">待填</span>';
+  const m=macd||'',o=osc||'';
+  const txt=(m+(o?'\n'+o:'')).trim();
+  if(m.includes('↑')||m.includes('翻正'))return '<span class="macd-up">'+txt+'</span>';
+  if(m.includes('↓')||m.includes('死叉')||m.includes('翻負'))return '<span class="macd-dn">'+txt+'</span>';
+  return '<span class="macd-mid">'+txt+'</span>';
 }
 
 function fitTag(f){
@@ -249,19 +370,25 @@ function fitTag(f){
   return '<span class="fit-out">已出場</span>';
 }
 
+function fmt(v,d=1,suf=''){return v===null||v===undefined?'—':(+v).toFixed(d)+suf;}
+function fmtP(v){return v===null||v===undefined?'—':Number(v).toLocaleString();}
+function fmtM(v){if(v===null||v===undefined)return'—';const b=Math.abs(v);if(b>=1000000)return(v/1000000).toFixed(1)+'B';if(b>=1000)return(v/1000).toFixed(0)+'K';return v.toFixed(0);}
+function yoyHtml(v){if(v===null||v===undefined)return'—';return'<span class="'+(v>=0?'up':'dn')+'">'+(v>=0?'+':'')+v.toFixed(1)+'%</span>';}
+
 function load(){
-  try{
-    const raw=localStorage.getItem(LSKEY);
-    if(raw)stocks=JSON.parse(raw);
-    else{stocks=DEFAULT;save(false);}
-  }catch(e){stocks=DEFAULT;}
+  try{const r=localStorage.getItem(LSKEY);if(r)stocks=JSON.parse(r).map(calcDerived);else{stocks=DEFAULT.map(calcDerived);save(false);}}
+  catch(e){stocks=DEFAULT.map(calcDerived);}
+  try{const r=localStorage.getItem(LOGKEY);if(r)log=JSON.parse(r);}catch(e){log=[];}
   fillSectors();render();updateStats();
+  document.getElementById('last-update').textContent='最後儲存：'+new Date().toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
 }
 
 function save(t=true){
   try{
     localStorage.setItem(LSKEY,JSON.stringify(stocks));
-    document.getElementById('last-update').textContent='資料更新：'+new Date().toLocaleDateString('zh-TW');
+    localStorage.setItem(LOGKEY,JSON.stringify(log.slice(0,200)));
+    const now=new Date().toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+    document.getElementById('last-update').textContent='最後儲存：'+now;
     if(t)toast('已儲存');
   }catch(e){toast('儲存失敗');}
 }
@@ -269,16 +396,19 @@ function save(t=true){
 function forceSync(){save(true);}
 
 function clearAll(){
-  if(!confirm('確定清除所有資料並還原預設？此操作無法復原！'))return;
-  localStorage.removeItem(LSKEY);
-  stocks=DEFAULT;save(false);render();toast('已還原預設資料');
+  if(!confirm('確定清除所有資料並還原預設？'))return;
+  localStorage.removeItem(LSKEY);localStorage.removeItem(LOGKEY);
+  stocks=DEFAULT.map(calcDerived);log=[];save(false);render();toast('已還原預設');
 }
 
-function toast(m){
-  const el=document.getElementById('toast');
-  el.textContent=m;el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2000);
+function clearLog(){if(!confirm('確定清除所有變更紀錄？'))return;log=[];localStorage.setItem(LOGKEY,'[]');renderLog();toast('紀錄已清除');}
+
+function addLog(name,changes){
+  const now=new Date().toLocaleString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+  log.unshift({time:now,name,changes});
 }
+
+function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2000);}
 
 function fillSectors(){
   const s=document.getElementById('fi');
@@ -299,9 +429,6 @@ function updateStats(){
 
 function sb(k){if(sk===k)sd*=-1;else{sk=k;sd=1;}render();}
 
-function fmt(v,d=1){return v===null||v===undefined?'—':typeof v==='number'?v.toFixed(d):v;}
-function fmtP(v){return v===null||v===undefined?'—':Number(v).toLocaleString();}
-
 function render(){
   const q=(document.getElementById('q').value||'').toLowerCase();
   const ff=document.getElementById('ff').value;
@@ -321,99 +448,181 @@ function render(){
     return av>bv?sd:av<bv?-sd:0;
   });
   const tb=document.getElementById('tb');
-  if(!list.length){
-    tb.innerHTML='<tr><td colspan="13" style="text-align:center;padding:2rem;color:#9ca3af">沒有符合條件的股票</td></tr>';
-    updateStats();return;
-  }
+  if(!list.length){tb.innerHTML='<tr><td colspan="16" style="text-align:center;padding:2rem;color:#9ca3af">沒有符合條件的股票</td></tr>';updateStats();return;}
   tb.innerHTML=list.map(s=>{
     const i=stocks.indexOf(s);
     const sig=kdSignal(s.kd_k,s.kd_d);
-    const peH=s.pe?'<span class="'+(s.pe>50?'peh':'')+'">'+(+s.pe).toFixed(1)+'</span>':'—';
-    const moatS=(s.moat||'').length>30?(s.moat||'').slice(0,28)+'…':s.moat||'—';
+    const peH=s.pe_ttm?'<span class="'+(s.pe_ttm>50?'peh':'')+'">'+(+s.pe_ttm).toFixed(1)+'x</span>':'—';
+    const moatS=(s.moat||'').length>22?(s.moat||'').slice(0,20)+'…':s.moat||'—';
+    const revDisp=s.rev_q?fmtM(s.rev_q):'—';
+    const gmDisp=s.gm_calc!=null?s.gm_calc.toFixed(1)+'%':'—';
+    const debtDisp=s.debt_ratio!=null?s.debt_ratio.toFixed(1)+'%':'—';
+    const roeDisp=s.roe!=null?(+s.roe).toFixed(1)+'%':'—';
     return '<tr>'+
-      '<td style="font-weight:600">'+s.code+'</td>'+
+      '<td style="font-weight:700">'+s.code+'</td>'+
       '<td title="'+(s.note||'')+'">'+s.name+'</td>'+
-      '<td style="color:#6b7280;font-size:11px">'+( s.sector||'—')+'</td>'+
+      '<td style="color:#9ca3af;font-size:10px">'+(s.sector||'—')+'</td>'+
       '<td>'+fmtP(s.price)+'</td>'+
+      '<td style="color:#374151">'+revDisp+(s.qtr?'<div style="font-size:9px;color:#9ca3af">'+s.qtr+'</div>':'')+'</td>'+
+      '<td>'+yoyHtml(s.rev_yoy)+'</td>'+
+      '<td>'+gmDisp+'</td>'+
       '<td>'+peH+'</td>'+
-      '<td>'+fmt(s.eps,2)+'</td>'+
-      '<td>'+fmt(s.roe,1)+'</td>'+
-      '<td>'+fmt(s.gm,1)+'</td>'+
-      '<td style="font-size:11px;color:#6b7280" title="'+(s.moat||'')+'">'+moatS+'</td>'+
+      '<td>'+roeDisp+'</td>'+
+      '<td>'+debtDisp+'</td>'+
+      '<td style="font-size:10px;color:#6b7280" title="'+(s.moat||'')+'">'+moatS+'</td>'+
       '<td><span class="'+sig.cls+'">'+sig.txt+'</span></td>'+
-      '<td style="font-size:11px;color:#6b7280">'+(s.buyzone||'—')+'</td>'+
+      '<td>'+macdTag(s.macd,s.osc)+'</td>'+
+      '<td style="font-size:10px;color:#9ca3af">'+(s.buyzone||'—')+'</td>'+
       '<td>'+fitTag(s.fit)+'</td>'+
       '<td><div style="display:flex;gap:3px">'+
-        '<button class="ab" onclick="openEdit('+i+')" title="編輯">&#x270E;</button>'+
-        '<button class="ab" onclick="del('+i+')" title="刪除" style="color:#dc2626">&#x2715;</button>'+
+        '<button class="ab" onclick="openEdit('+i+')" title="編輯">✏</button>'+
+        '<button class="ab" onclick="del('+i+')" title="刪除" style="color:#dc2626">✕</button>'+
       '</div></td>'+
     '</tr>';
   }).join('');
   updateStats();
 }
 
-function openAdd(){
-  eidx=null;
-  document.getElementById('mt').textContent='新增股票';
-  ['fc','fn','fsc2','fp','fpe','fe','fr','fg2','fk','fd','fmw','fbz','fnt'].forEach(id=>{document.getElementById(id).value='';});
-  document.getElementById('ffit').value='中性觀察';
-  document.getElementById('overlay').style.display='flex';
+function switchTab(t){
+  curTab=t;
+  document.getElementById('pane-basic').style.display=t==='basic'?'block':'none';
+  document.getElementById('pane-fin').style.display=t==='fin'?'block':'none';
+  document.getElementById('tab-basic').className='modal-tab'+(t==='basic'?' active':'');
+  document.getElementById('tab-fin').className='modal-tab'+(t==='fin'?' active':'');
+  if(t==='fin')updateCalc();
 }
 
-function openEdit(i){
-  eidx=i;const s=stocks[i];
-  document.getElementById('mt').textContent='編輯 '+s.name;
+function updateCalc(){
+  const n=id=>{const v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;};
+  const rev=n('frev'),gp=n('fgp'),asset=n('fasset'),debt=n('fdebt'),price=n('fp');
+  const e1=n('feps1'),e2=n('feps2'),e3=n('feps3'),e4=n('feps4'),revly=n('frevly');
+  const gm=rev&&gp?Math.round(gp/rev*1000)/10:null;
+  const ttm=[e1,e2,e3,e4].filter(x=>x!==null);
+  const pe=price&&ttm.length===4?Math.round(price/ttm.reduce((a,b)=>a+b,0)*10)/10:null;
+  const dr=asset&&debt?Math.round(debt/asset*1000)/10:null;
+  const yoy=rev&&revly?Math.round((rev-revly)/revly*1000)/10:null;
+  document.getElementById('c-gm').textContent=gm!=null?gm.toFixed(1)+'%':'—';
+  document.getElementById('c-pe').textContent=pe!=null?pe.toFixed(1)+'x':'—';
+  document.getElementById('c-debt').textContent=dr!=null?dr.toFixed(1)+'%':'—';
+  document.getElementById('c-yoy').textContent=yoy!=null?(yoy>=0?'+':'')+yoy.toFixed(1)+'%':'—';
+  document.getElementById('c-yoy').style.color=yoy!=null?(yoy>=0?'#16a34a':'#dc2626'):'#1d4ed8';
+}
+
+['frev','fgp','fasset','fdebt','fp','feps1','feps2','feps3','feps4','frevly'].forEach(id=>{
+  document.addEventListener('DOMContentLoaded',()=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>{if(curTab==='fin')updateCalc();});});
+});
+
+function setFields(s){
   document.getElementById('fc').value=s.code||'';
   document.getElementById('fn').value=s.name||'';
   document.getElementById('fsc2').value=s.sector||'';
   document.getElementById('fp').value=s.price||'';
-  document.getElementById('fpe').value=s.pe||'';
-  document.getElementById('fe').value=s.eps||'';
-  document.getElementById('fr').value=s.roe||'';
-  document.getElementById('fg2').value=s.gm||'';
+  document.getElementById('ffit').value=s.fit||'中性觀察';
   document.getElementById('fk').value=s.kd_k!=null?s.kd_k:'';
   document.getElementById('fd').value=s.kd_d!=null?s.kd_d:'';
-  document.getElementById('fmw').value=s.moat||'';
+  document.getElementById('fmacd').value=s.macd||'';
+  document.getElementById('fosc').value=s.osc||'';
   document.getElementById('fbz').value=s.buyzone||'';
-  document.getElementById('ffit').value=s.fit||'中性觀察';
+  document.getElementById('fmw').value=s.moat||'';
   document.getElementById('fnt').value=s.note||'';
+  document.getElementById('fqtr').value=s.qtr||'';
+  document.getElementById('frev').value=s.rev_q||'';
+  document.getElementById('fgp').value=s.gp||'';
+  document.getElementById('fop').value=s.op||'';
+  document.getElementById('fni').value=s.ni||'';
+  document.getElementById('feps1').value=s.eps1!=null?s.eps1:'';
+  document.getElementById('feps2').value=s.eps2!=null?s.eps2:'';
+  document.getElementById('feps3').value=s.eps3!=null?s.eps3:'';
+  document.getElementById('feps4').value=s.eps4!=null?s.eps4:'';
+  document.getElementById('fepsly').value=s.epsly!=null?s.epsly:'';
+  document.getElementById('fasset').value=s.asset||'';
+  document.getElementById('fdebt').value=s.debt||'';
+  document.getElementById('fbv').value=s.bv!=null?s.bv:'';
+  document.getElementById('froe').value=s.roe!=null?s.roe:'';
+  document.getElementById('frevly').value=s.revly||'';
+}
+
+function openAdd(){
+  eidx=null;
+  setFields({fit:'中性觀察'});
+  switchTab('basic');
+  document.getElementById('overlay').style.display='flex';
+}
+
+function openEdit(i){
+  eidx=i;
+  setFields(stocks[i]);
+  switchTab('basic');
   document.getElementById('overlay').style.display='flex';
 }
 
 function bgClose(e){if(e.target===document.getElementById('overlay'))closeM();}
 function closeM(){document.getElementById('overlay').style.display='none';}
 
-function saveS(){
-  const code=document.getElementById('fc').value.trim();
-  const name=document.getElementById('fn').value.trim();
-  if(!code||!name){toast('代號和名稱為必填');return;}
-  const n=v=>{const x=parseFloat(v);return isNaN(x)?null:x;};
-  const obj={code,name,
+function getFields(){
+  const n=id=>{const v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;};
+  return{
+    code:document.getElementById('fc').value.trim(),
+    name:document.getElementById('fn').value.trim(),
     sector:document.getElementById('fsc2').value.trim(),
-    price:n(document.getElementById('fp').value),
-    pe:n(document.getElementById('fpe').value),
-    eps:n(document.getElementById('fe').value),
-    roe:n(document.getElementById('fr').value),
-    gm:n(document.getElementById('fg2').value),
-    kd_k:n(document.getElementById('fk').value),
-    kd_d:n(document.getElementById('fd').value),
-    moat:document.getElementById('fmw').value.trim(),
+    price:n('fp'),fit:document.getElementById('ffit').value,
+    kd_k:n('fk'),kd_d:n('fd'),
+    macd:document.getElementById('fmacd').value,
+    osc:document.getElementById('fosc').value,
     buyzone:document.getElementById('fbz').value.trim(),
-    fit:document.getElementById('ffit').value,
+    moat:document.getElementById('fmw').value.trim(),
     note:document.getElementById('fnt').value.trim(),
+    qtr:document.getElementById('fqtr').value.trim(),
+    rev_q:n('frev'),gp:n('fgp'),op:n('fop'),ni:n('fni'),
+    eps1:n('feps1'),eps2:n('feps2'),eps3:n('feps3'),eps4:n('feps4'),epsly:n('fepsly'),
+    asset:n('fasset'),debt:n('fdebt'),bv:n('fbv'),roe:n('froe'),revly:n('frevly'),
   };
-  if(eidx!==null)stocks[eidx]=obj;else stocks.push(obj);
+}
+
+function saveS(){
+  const obj=getFields();
+  if(!obj.code||!obj.name){toast('代號和名稱為必填');return;}
+  calcDerived(obj);
+  const changes=[];
+  if(eidx!==null){
+    const old=stocks[eidx];
+    if(old.price!==obj.price&&obj.price)changes.push('現價→'+obj.price);
+    if(old.fit!==obj.fit)changes.push('適合度→'+obj.fit);
+    if(old.kd_k!==obj.kd_k&&obj.kd_k!=null)changes.push('K值→'+obj.kd_k);
+    if(old.macd!==obj.macd&&obj.macd)changes.push('MACD→'+obj.macd);
+    if(old.eps1!==obj.eps1&&obj.eps1!=null)changes.push('EPS→'+obj.eps1);
+    if(old.rev_q!==obj.rev_q&&obj.rev_q!=null)changes.push('營收→'+fmtM(obj.rev_q));
+    if(old.qtr!==obj.qtr&&obj.qtr)changes.push('季別→'+obj.qtr);
+    stocks[eidx]=obj;
+  }else{
+    stocks.push(obj);
+    changes.push('新增股票');
+  }
+  if(changes.length>0)addLog(obj.name+'('+obj.code+')',changes.join('、'));
   closeM();fillSectors();render();save();
 }
 
 function del(i){
   if(!confirm('確定刪除 '+stocks[i].code+' '+stocks[i].name+'？'))return;
+  addLog(stocks[i].name+'('+stocks[i].code+')','刪除');
   stocks.splice(i,1);render();save();
 }
 
+function openLog(){
+  renderLog();
+  document.getElementById('log-overlay').style.display='flex';
+}
+function closeLog(){document.getElementById('log-overlay').style.display='none';}
+
+function renderLog(){
+  const w=document.getElementById('log-wrap');
+  if(!log.length){w.innerHTML='<div style="text-align:center;padding:2rem;color:#9ca3af;font-size:12px">尚無變更紀錄</div>';return;}
+  w.innerHTML=log.map(l=>'<div class="log-item"><div class="log-time">'+l.time+'</div><div class="log-content"><span class="log-stock">'+l.name+'</span> — '+l.changes+'</div></div>').join('');
+}
+
 function exportCSV(){
-  const h=['代號','名稱','產業','現價','本益比','EPS','ROE%','毛利%','護城河','K值','D值','買點區間','適合度','備註'];
-  const rows=stocks.map(s=>[s.code,s.name,s.sector,s.price,s.pe,s.eps,s.roe,s.gm,s.moat,s.kd_k,s.kd_d,s.buyzone,s.fit,s.note].map(v=>v==null?'':String(v).replace(/,/g,'，')).join(','));
+  const h=['代號','名稱','產業','現價','季別','營業收入','毛利率%','TTM本益比','ROE%','負債比%','K值','D值','MACD','OSC','買點區間','適合度','護城河','備註'];
+  const rows=stocks.map(s=>[s.code,s.name,s.sector,s.price,s.qtr,s.rev_q,s.gm_calc,s.pe_ttm,s.roe,s.debt_ratio,s.kd_k,s.kd_d,s.macd,s.osc,s.buyzone,s.fit,s.moat,s.note].map(v=>v==null?'':String(v).replace(/,/g,'，')).join(','));
   const csv=[h.join(','),...rows].join('\n');
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
@@ -422,6 +631,8 @@ function exportCSV(){
 }
 
 load();
+
+document.querySelectorAll('#pane-fin input').forEach(el=>el.addEventListener('input',()=>{if(curTab==='fin')updateCalc();}));
 </script>
 </body>
 </html>
