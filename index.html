@@ -126,13 +126,14 @@ tbody tr:hover td{background:#fafafa}
 
   <div class="legend">
     KD訊號：
-    <span><span class="ld" style="background:#dcfce7"></span>綠＝黃金交叉</span>
-    <span><span class="ld" style="background:#fee2e2"></span>紅＝超賣死叉/超買警示</span>
-    <span><span class="ld" style="background:#fef9c3"></span>黃＝中段/高位觀察</span>
-    &nbsp;MACD：
-    <span><span class="ld" style="background:#dcfce7"></span>翻正↑</span>
-    <span><span class="ld" style="background:#fee2e2"></span>死叉↓</span>
-    <span><span class="ld" style="background:#fef9c3"></span>中性</span>
+    <span><span class="ld" style="background:#dcfce7"></span>綠＝黃金交叉/超賣反彈</span>
+    <span><span class="ld" style="background:#fee2e2"></span>紅＝死叉/超買警示</span>
+    <span><span class="ld" style="background:#fef9c3"></span>黃＝中性觀察</span>
+    &nbsp;OSC：
+    <span><span class="ld" style="background:#dcfce7"></span>正數＝多方</span>
+    <span><span class="ld" style="background:#fee2e2"></span>負數＝空方</span>
+    &nbsp;合理價/目標價：<span style="color:#16a34a">綠＝高於現價（有上行空間）</span>
+    <span style="color:#dc2626">紅＝低於現價（已超過）</span>
   </div>
 
   <div class="tbl-outer">
@@ -143,15 +144,16 @@ tbody tr:hover td{background:#fafafa}
         <th style="width:58px" onclick="sb('name')">名稱</th>
         <th style="width:70px" onclick="sb('sector')">產業</th>
         <th style="width:50px" onclick="sb('price')">現價↕</th>
-        <th style="width:50px" onclick="sb('rev_q')">最新營收↕</th>
         <th style="width:44px" onclick="sb('rev_yoy')">營收YoY↕</th>
         <th style="width:38px" onclick="sb('gm_calc')">毛利率↕</th>
         <th style="width:38px" onclick="sb('pe_ttm')">本益比↕</th>
         <th style="width:36px" onclick="sb('roe')">ROE%↕</th>
         <th style="width:36px" onclick="sb('debt_ratio')">負債%↕</th>
+        <th style="width:60px" onclick="sb('fair_value')">合理價↕</th>
+        <th style="width:60px" onclick="sb('target_price')">目標價↕</th>
         <th style="width:96px">護城河</th>
         <th style="width:105px" onclick="sb('kd_k')">KD技術訊號↕</th>
-        <th style="width:72px">MACD訊號</th>
+        <th style="width:60px">OSC</th>
         <th style="width:68px">買點區間</th>
         <th style="width:60px" onclick="sb('fit')">適合度↕</th>
         <th style="width:48px">操作</th>
@@ -189,31 +191,11 @@ tbody tr:hover td{background:#fafafa}
             </select>
           </div>
         </div>
-        <div class="sec-title">技術面</div>
+        <div class="sec-title">技術面（從K線圖直接抄數字）</div>
         <div class="fg">
-          <div class="fi"><label>K值 (0~100)</label><input id="fk" type="number" step="0.1" min="0" max="100"></div>
-          <div class="fi"><label>D值 (0~100)</label><input id="fd" type="number" step="0.1" min="0" max="100"></div>
-          <div class="fi"><label>MACD方向</label>
-            <select id="fmacd">
-              <option value="">待填</option>
-              <option value="翻正↑">翻正↑</option>
-              <option value="零軸以上↑">零軸以上↑</option>
-              <option value="柱縮小→">柱縮小→</option>
-              <option value="零軸以下→">零軸以下→</option>
-              <option value="死叉↓">死叉↓</option>
-              <option value="翻負↓">翻負↓</option>
-            </select>
-          </div>
-          <div class="fi"><label>OSC狀態</label>
-            <select id="fosc">
-              <option value="">待填</option>
-              <option value="持續放大↑">持續放大↑</option>
-              <option value="縮小收斂→">縮小收斂→</option>
-              <option value="翻正↑">翻正↑</option>
-              <option value="翻負↓">翻負↓</option>
-              <option value="持續縮小↓">持續縮小↓</option>
-            </select>
-          </div>
+          <div class="fi"><label>K值 (0~100)</label><input id="fk" type="number" step="0.1" min="0" max="100" placeholder="例：51.11"></div>
+          <div class="fi"><label>D值 (0~100)</label><input id="fd" type="number" step="0.1" min="0" max="100" placeholder="例：38.00"></div>
+          <div class="fi full"><label>OSC（DIF－MACD，正＝多方 負＝空方）</label><input id="fosc" type="number" step="0.01" placeholder="例：-10.39"></div>
           <div class="fi full"><label>買點區間</label><input id="fbz" placeholder="例：2100~2200"></div>
         </div>
         <div class="sec-title">護城河與備註</div>
@@ -224,38 +206,31 @@ tbody tr:hover td{background:#fafafa}
       </div>
 
       <div id="pane-fin" style="display:none">
-        <div class="sec-title">損益表（百萬元）— 從App直接填入</div>
+        <div class="sec-title">損益表 EPS（從APP損益表直接抄）</div>
         <div class="fg">
           <div class="fi"><label>最新季別</label><input id="fqtr" placeholder="例：2026Q1"></div>
-          <div class="fi"><label>營業收入</label><input id="frev" type="number" placeholder="1134103"></div>
-          <div class="fi"><label>營業毛利</label><input id="fgp" type="number" placeholder="751295"></div>
-          <div class="fi"><label>營業利益</label><input id="fop" type="number" placeholder="658966"></div>
-          <div class="fi"><label>稅後純益</label><input id="fni" type="number" placeholder="572801"></div>
-          <div class="fi"><label>EPS 單季（元）</label><input id="feps1" type="number" step="0.01" placeholder="22.08"></div>
-        </div>
-        <div class="sec-title">過去三季EPS（用於TTM本益比）</div>
-        <div class="fg">
+          <div class="fi"><label>EPS 本季（元）</label><input id="feps1" type="number" step="0.01" placeholder="22.08"></div>
           <div class="fi"><label>上季EPS</label><input id="feps2" type="number" step="0.01" placeholder="19.51"></div>
           <div class="fi"><label>前兩季EPS</label><input id="feps3" type="number" step="0.01" placeholder="17.44"></div>
-          <div class="fi"><label>前三季EPS</label><input id="feps4" type="number" step="0.01" placeholder="15.36"></div>
-          <div class="fi"><label>去年同季EPS（YoY用）</label><input id="fepsly" type="number" step="0.01" placeholder="13.5"></div>
+          <div class="fi full"><label>前三季EPS</label><input id="feps4" type="number" step="0.01" placeholder="15.36"></div>
         </div>
-        <div class="sec-title">資產負債表</div>
+        <div class="sec-title">財務比率（從APP財務比率頁直接抄%數字）</div>
         <div class="fg">
-          <div class="fi"><label>資產總計</label><input id="fasset" type="number" placeholder="8660389"></div>
-          <div class="fi"><label>負債總計</label><input id="fdebt" type="number" placeholder="2728561"></div>
-          <div class="fi"><label>每股淨值（元）</label><input id="fbv" type="number" step="0.01" placeholder="227.17"></div>
-          <div class="fi"><label>ROE (%)</label><input id="froe" type="number" step="0.1" placeholder="38.5"></div>
+          <div class="fi"><label>毛利率 %</label><input id="fgm" type="number" step="0.1" placeholder="例：66.3"></div>
+          <div class="fi"><label>負債比率 %</label><input id="fdr" type="number" step="0.1" placeholder="例：31.5"></div>
+          <div class="fi"><label>ROE %</label><input id="froe" type="number" step="0.1" placeholder="例：38.5"></div>
+          <div class="fi"><label>營收YoY %</label><input id="fyoy" type="number" step="0.1" placeholder="例：35.1"></div>
         </div>
-        <div class="sec-title">去年同季營收（計算YoY）</div>
+        <div class="sec-title">合理價</div>
         <div class="fg">
-          <div class="fi full"><label>去年同季營業收入</label><input id="frevly" type="number" placeholder="592642"></div>
+          <div class="fi"><label>合理本益比（你設定的倍數）</label><input id="fper" type="number" step="0.5" placeholder="例：25"></div>
+          <div class="fi"><label>法人目標價</label><input id="ftp" type="number" step="1" placeholder="例：2800"></div>
         </div>
         <div class="calc-row" id="calc-row">
-          <div class="calc-item"><div class="cl">毛利率</div><div class="cv" id="c-gm">—</div></div>
+          <div class="calc-item"><div class="cl">TTM EPS</div><div class="cv" id="c-ttm">—</div></div>
           <div class="calc-item"><div class="cl">TTM本益比</div><div class="cv" id="c-pe">—</div></div>
-          <div class="calc-item"><div class="cl">負債比</div><div class="cv" id="c-debt">—</div></div>
-          <div class="calc-item"><div class="cl">營收YoY</div><div class="cv" id="c-yoy">—</div></div>
+          <div class="calc-item"><div class="cl">本益比合理價</div><div class="cv" id="c-fv">—</div></div>
+          <div class="calc-item"><div class="cl">法人目標價</div><div class="cv" id="c-tp">—</div></div>
         </div>
       </div>
 
@@ -289,54 +264,55 @@ const LOGKEY='ivy_log_v5';
 let stocks=[],log=[],eidx=null,sk='',sd=1,curTab='basic';
 
 const DEFAULT=[
-{code:'2330',name:'台積電',sector:'先進製程',price:2255,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'全球無可替代，3nm/2nm技術壁壘',buyzone:'2100~2200',note:'250萬核心標的',qtr:'2026Q1',rev_q:1134103,gp:751295,op:658966,ni:572801,eps1:22.08,eps2:19.51,eps3:17.44,eps4:15.36,epsly:13.5,asset:8660389,debt:2728561,bv:227.17,roe:38.5,revly:592642},
-{code:'0050',name:'元大台灣50',sector:'ETF',price:97.3,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'追蹤加權指數，分散風險',buyzone:'核心持倉',note:'250萬核心ETF',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:null,revly:null},
-{code:'2884',name:'玉山金',sector:'金融',price:null,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'品牌+客戶黏著度高',buyzone:'持有',note:'持有中',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:null,revly:null},
-{code:'5347',name:'世界先進',sector:'成熟製程',price:174.5,fit:'中性觀察',kd_k:71.8,kd_d:72.5,macd:'',osc:'',moat:'台積電富爸爸，非中系稀缺',buyzone:'155~165',note:'隔日沖標的',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:8.5,revly:null},
-{code:'8150',name:'南茂',sector:'IC封測',price:92.7,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'記憶體封測全球前二，漲價效益',buyzone:'80~88',note:'隔日沖轉機股',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.72,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:5.2,revly:null},
-{code:'2317',name:'鴻海',sector:'AI伺服器',price:250,fit:'已出場',kd_k:null,kd_d:null,macd:'',osc:'',moat:'AI伺服器全球最大代工',buyzone:'重找買點',note:'248已出場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:4.5,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
-{code:'3374',name:'精材',sector:'IC封測',price:202,fit:'已出場',kd_k:81.1,kd_d:64.4,macd:'',osc:'',moat:'台積電持股41%背書，MEMS製程',buyzone:'重找買點',note:'已出場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:2.1,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:18.5,revly:null},
-{code:'3037',name:'欣興',sector:'ABF載板',price:970,fit:'已出場',kd_k:33,kd_d:42.6,macd:'',osc:'',moat:'ABF載板全球龍頭，HBM技術壁壘',buyzone:'850~870',note:'874已出場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:3.28,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
-{code:'6789',name:'采鈺',sector:'CoPoS/矽光子',price:603,fit:'勿追',kd_k:88,kd_d:81,macd:'',osc:'',moat:'台積電生態系獨佔，CoPoS技術',buyzone:'570~585',note:'EPS衰退，估值150倍',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:4.01,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:18.2,revly:null},
-{code:'3105',name:'穩懋',sector:'GaAs磊晶',price:524,fit:'適合',kd_k:16.7,kd_d:23.6,macd:'',osc:'',moat:'砷化鎵磊晶龍頭，全球市占高',buyzone:'490~515',note:'KD超賣，隔日沖觀察',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:15.8,revly:null},
-{code:'4766',name:'南寶',sector:'AI封裝材料',price:362,fit:'適合',kd_k:39.5,kd_d:45.7,macd:'',osc:'',moat:'利基市場龍頭，客戶黏著度高',buyzone:'355~365',note:'財務穩健',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:22.4,revly:null},
-{code:'4763',name:'富采',sector:'LED/光通訊',price:74.6,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'LED封測利基，光通訊題材',buyzone:'74~77',note:'毛利率偏低',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:null,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.3,revly:null},
-{code:'6669',name:'緯穎',sector:'AI伺服器ODM',price:4860,fit:'勿追',kd_k:null,kd_d:null,macd:'',osc:'',moat:'AI伺服器龍頭，微軟/Google鎖定',buyzone:'4600以下',note:'高位KD超買',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:48.5,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:55.8,revly:null},
-{code:'6670',name:'漢唐',sector:'廠務工程',price:978,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'台積電廠務獨家承包，難以替代',buyzone:'950~970',note:'AI篩選第一優先',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:10.2,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:28.5,revly:null},
-{code:'2327',name:'國巨',sector:'被動元件',price:629,fit:'最適合',kd_k:84.3,kd_d:80.9,macd:'',osc:'',moat:'全球MLCC前三大，漲價定價能力',buyzone:'370~385',note:'AI篩選第二優先',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:6.8,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:22.5,revly:null},
-{code:'3189',name:'景碩',sector:'HDI載板',price:554,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'ABF第二，私募引進大客戶',buyzone:'450~470',note:'目標價650',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:3.28,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:18.5,revly:null},
-{code:'2449',name:'京元電子',sector:'IC測試/HBM',price:354,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'HBM測試需求暴增，台積電指定廠',buyzone:'330~340',note:'AI篩選第四優先',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:3.8,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:15.2,revly:null},
-{code:'2454',name:'聯發科',sector:'AI手機晶片',price:3860,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'AI手機龍頭，OpenAI戰略夥伴',buyzone:'2900~3000',note:'PE56倍偏高',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:18.5,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:28.5,revly:null},
-{code:'3036',name:'文曄',sector:'IC通路',price:275.5,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'全球前三大IC通路，歐美版圖擴張',buyzone:'248~258',note:'高負債72%',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.68,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:8.5,revly:null},
-{code:'4958',name:'臻鼎-KY',sector:'PCB/AI載板',price:439,fit:'適合',kd_k:47.2,kd_d:48.1,macd:'',osc:'',moat:'AI相關PCB龍頭，軟板+載板雙題材',buyzone:'410~422',note:'等KD交叉確認',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.95,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
-{code:'2303',name:'聯電',sector:'成熟製程',price:111,fit:'適合',kd_k:86.6,kd_d:86.6,macd:'',osc:'',moat:'成熟製程全球前三，美中受惠',buyzone:'92~98',note:'殖利率穩健',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.15,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:10.5,revly:null},
-{code:'3035',name:'智原',sector:'ASIC設計',price:208.5,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'4奈米ASIC確立，DIS業務毛利近100%',buyzone:'188~198',note:'ROE偏低，EPS衰退',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.92,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:8.2,revly:null},
-{code:'2345',name:'智邦',sector:'AI網通',price:2525,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'AI網通交換器全球龍頭，雲端鎖定',buyzone:'2300~2400',note:'法人大賣超注意',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:21.5,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:32.5,revly:null},
-{code:'8358',name:'金居',sector:'ABF材料',price:460,fit:'中性觀察',kd_k:52.3,kd_d:51.7,macd:'',osc:'',moat:'ABF材料稀缺，AI伺服器直接受惠',buyzone:'等處置解除',note:'處置股！等解除後才可進場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:2.06,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:18.5,revly:null},
-{code:'3163',name:'波若威',sector:'CPO/矽光子',price:1035,fit:'勿追',kd_k:null,kd_d:null,macd:'',osc:'',moat:'CPO技術全球領先，矽光子7劍客',buyzone:'850~950',note:'PE296倍嚴重過熱',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.2,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
-{code:'3008',name:'大立光',sector:'精密光學',price:3540,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'全球高階手機鏡頭龍頭，毛利55%',buyzone:'2650~2750',note:'財務最優質，PE歷史低位',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:45.2,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:28.5,revly:null},
-{code:'2356',name:'英業達',sector:'AI伺服器ODM',price:55,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'GB200主力廠，NVIDIA深度合作',buyzone:'46~50',note:'殖利率4.8%穩健',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.82,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:15.2,revly:null},
-{code:'3481',name:'群創',sector:'OLED/面板',price:37.5,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'OLED大尺寸布局，IT面板需求',buyzone:'33~36',note:'景氣循環高度敏感',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.28,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:5.2,revly:null},
-{code:'2301',name:'光寶科',sector:'AI電源',price:220,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:'',moat:'GB200/300電源龍頭，NVIDIA合作深',buyzone:'195~210',note:'ROE僅4.2%，毛利下滑',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:2.28,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:4.2,revly:null},
-{code:'8155',name:'博智',sector:'PCB/HDI',price:411,fit:'適合',kd_k:23.9,kd_d:39.4,macd:'',osc:'',moat:'PCB龍頭之一，外資持續買超',buyzone:'390~410',note:'KD超賣，等黃金交叉',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:5.2,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:12.5,revly:null},
-{code:'6257',name:'矽格',sector:'IC封測',price:218.5,fit:'最適合',kd_k:78.7,kd_d:79.2,macd:'',osc:'',moat:'毛利連3季提升，現金流強勁',buyzone:'210~215',note:'存貨極低，財報品質優異',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:2.1,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:4.6,revly:null},
-{code:'8261',name:'富鼎',sector:'IC通路/功率半導體',price:149,fit:'最適合',kd_k:77.2,kd_d:70.5,macd:'',osc:'',moat:'毛利38%/負債11%，財務極健康',buyzone:'135~138',note:'等回調135~138絕佳進場',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:1.57,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:13,revly:null},
-{code:'5425',name:'台半',sector:'功率半導體',price:86.9,fit:'中性觀察',kd_k:78.4,kd_d:72.3,macd:'',osc:'',moat:'營收歷史新高，毛利持續提升',buyzone:'80~82',note:'ROE偏低，等回調',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.7,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:2.2,revly:null},
-{code:'2481',name:'強茂',sector:'功率半導體',price:133,fit:'中性觀察',kd_k:78.6,kd_d:72.6,macd:'',osc:'',moat:'毛利32%穩定，功率半導體題材',buyzone:'125~128',note:'PE44倍偏高',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.75,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:2,revly:null},
-{code:'6147',name:'頎邦',sector:'IC封測',price:215.5,fit:'中性觀察',kd_k:76.8,kd_d:75.4,macd:'',osc:'',moat:'負債僅15.5%，本業改善持續',buyzone:'190~200',note:'等主力轉買超',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:0.59,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:0.9,revly:null},
-{code:'3711',name:'日月光投控',sector:'IC封測龍頭',price:561,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:'',moat:'IC封測全球龍頭，FOPLP/3DIC技術',buyzone:'470~480',note:'EPS成長85%，等回調',qtr:'',rev_q:null,gp:null,op:null,ni:null,eps1:3.24,eps2:null,eps3:null,eps4:null,epsly:null,asset:null,debt:null,bv:null,roe:4.1,revly:null},
+{code:'2330',name:'台積電',sector:'先進製程',price:2255,fit:'最適合',kd_k:null,kd_d:null,osc:null,macd:'',moat:'全球無可替代，3nm/2nm技術壁壘',buyzone:'2100~2200',note:'250萬核心標的',qtr:'2026Q1',eps1:22.08,eps2:19.51,eps3:17.44,eps4:15.36,gm_pct:66.3,dr_pct:31.5,roe:38.5,yoy_pct:35.1,pe_ratio:25,target_price:2800},
+{code:'0050',name:'元大台灣50',sector:'ETF',price:97.3,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'追蹤加權指數，分散風險',buyzone:'核心持倉',note:'250萬核心ETF',qtr:'',eps1:null,eps2:null,eps3:null,eps4:null,roe:null,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2884',name:'玉山金',sector:'金融',price:null,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'品牌+客戶黏著度高',buyzone:'持有',note:'持有中',qtr:'',eps1:null,eps2:null,eps3:null,eps4:null,roe:null,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'5347',name:'世界先進',sector:'成熟製程',price:174.5,fit:'中性觀察',kd_k:71.8,kd_d:72.5,macd:'',osc:null,moat:'台積電富爸爸，非中系稀缺',buyzone:'155~165',note:'隔日沖標的',qtr:'',eps1:null,eps2:null,eps3:null,eps4:null,roe:8.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'8150',name:'南茂',sector:'IC封測',price:92.7,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:null,moat:'記憶體封測全球前二，漲價效益',buyzone:'80~88',note:'隔日沖轉機股',qtr:'',eps1:0.72,eps2:null,eps3:null,eps4:null,roe:5.2,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2317',name:'鴻海',sector:'AI伺服器',price:250,fit:'已出場',kd_k:null,kd_d:null,macd:'',osc:null,moat:'AI伺服器全球最大代工',buyzone:'重找買點',note:'248已出場',qtr:'',eps1:4.5,eps2:null,eps3:null,eps4:null,roe:12.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3374',name:'精材',sector:'IC封測',price:202,fit:'已出場',kd_k:81.1,kd_d:64.4,macd:'',osc:null,moat:'台積電持股41%背書，MEMS製程',buyzone:'重找買點',note:'已出場',qtr:'',eps1:2.1,eps2:null,eps3:null,eps4:null,roe:18.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3037',name:'欣興',sector:'ABF載板',price:970,fit:'已出場',kd_k:33,kd_d:42.6,macd:'',osc:null,moat:'ABF載板全球龍頭，HBM技術壁壘',buyzone:'850~870',note:'874已出場',qtr:'',eps1:3.28,eps2:null,eps3:null,eps4:null,roe:12.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'6789',name:'采鈺',sector:'CoPoS/矽光子',price:603,fit:'勿追',kd_k:88,kd_d:81,macd:'',osc:null,moat:'台積電生態系獨佔，CoPoS技術',buyzone:'570~585',note:'EPS衰退，估值150倍',qtr:'',eps1:4.01,eps2:null,eps3:null,eps4:null,roe:18.2,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3105',name:'穩懋',sector:'GaAs磊晶',price:524,fit:'適合',kd_k:16.7,kd_d:23.6,macd:'',osc:null,moat:'砷化鎵磊晶龍頭，全球市占高',buyzone:'490~515',note:'KD超賣，隔日沖觀察',qtr:'',eps1:null,eps2:null,eps3:null,eps4:null,roe:15.8,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'4766',name:'南寶',sector:'AI封裝材料',price:362,fit:'適合',kd_k:39.5,kd_d:45.7,macd:'',osc:null,moat:'利基市場龍頭，客戶黏著度高',buyzone:'355~365',note:'財務穩健',qtr:'',eps1:null,eps2:null,eps3:null,eps4:null,roe:22.4,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'4763',name:'富采',sector:'LED/光通訊',price:74.6,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:null,moat:'LED封測利基，光通訊題材',buyzone:'74~77',note:'毛利率偏低',qtr:'',eps1:null,eps2:null,eps3:null,eps4:null,roe:12.3,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'6669',name:'緯穎',sector:'AI伺服器ODM',price:4860,fit:'勿追',kd_k:null,kd_d:null,macd:'',osc:null,moat:'AI伺服器龍頭，微軟/Google鎖定',buyzone:'4600以下',note:'高位KD超買',qtr:'',eps1:48.5,eps2:null,eps3:null,eps4:null,roe:55.8,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'6670',name:'漢唐',sector:'廠務工程',price:978,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'台積電廠務獨家承包，難以替代',buyzone:'950~970',note:'AI篩選第一優先',qtr:'',eps1:10.2,eps2:null,eps3:null,eps4:null,roe:28.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2327',name:'國巨',sector:'被動元件',price:629,fit:'最適合',kd_k:84.3,kd_d:80.9,macd:'',osc:null,moat:'全球MLCC前三大，漲價定價能力',buyzone:'370~385',note:'AI篩選第二優先',qtr:'',eps1:6.8,eps2:null,eps3:null,eps4:null,roe:22.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3189',name:'景碩',sector:'HDI載板',price:554,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'ABF第二，私募引進大客戶',buyzone:'450~470',note:'目標價650',qtr:'',eps1:3.28,eps2:null,eps3:null,eps4:null,roe:18.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2449',name:'京元電子',sector:'IC測試/HBM',price:354,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'HBM測試需求暴增，台積電指定廠',buyzone:'330~340',note:'AI篩選第四優先',qtr:'',eps1:3.8,eps2:null,eps3:null,eps4:null,roe:15.2,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2454',name:'聯發科',sector:'AI手機晶片',price:3860,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'AI手機龍頭，OpenAI戰略夥伴',buyzone:'2900~3000',note:'PE56倍偏高',qtr:'',eps1:18.5,eps2:null,eps3:null,eps4:null,roe:28.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3036',name:'文曄',sector:'IC通路',price:275.5,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:null,moat:'全球前三大IC通路，歐美版圖擴張',buyzone:'248~258',note:'高負債72%',qtr:'',eps1:1.68,eps2:null,eps3:null,eps4:null,roe:8.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'4958',name:'臻鼎-KY',sector:'PCB/AI載板',price:439,fit:'適合',kd_k:47.2,kd_d:48.1,macd:'',osc:null,moat:'AI相關PCB龍頭，軟板+載板雙題材',buyzone:'410~422',note:'等KD交叉確認',qtr:'',eps1:1.95,eps2:null,eps3:null,eps4:null,roe:12.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2303',name:'聯電',sector:'成熟製程',price:111,fit:'適合',kd_k:86.6,kd_d:86.6,macd:'',osc:null,moat:'成熟製程全球前三，美中受惠',buyzone:'92~98',note:'殖利率穩健',qtr:'',eps1:1.15,eps2:null,eps3:null,eps4:null,roe:10.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3035',name:'智原',sector:'ASIC設計',price:208.5,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:null,moat:'4奈米ASIC確立，DIS業務毛利近100%',buyzone:'188~198',note:'ROE偏低，EPS衰退',qtr:'',eps1:0.92,eps2:null,eps3:null,eps4:null,roe:8.2,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2345',name:'智邦',sector:'AI網通',price:2525,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'AI網通交換器全球龍頭，雲端鎖定',buyzone:'2300~2400',note:'法人大賣超注意',qtr:'',eps1:21.5,eps2:null,eps3:null,eps4:null,roe:32.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'8358',name:'金居',sector:'ABF材料',price:460,fit:'中性觀察',kd_k:52.3,kd_d:51.7,macd:'',osc:null,moat:'ABF材料稀缺，AI伺服器直接受惠',buyzone:'等處置解除',note:'處置股！等解除後才可進場',qtr:'',eps1:2.06,eps2:null,eps3:null,eps4:null,roe:18.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3163',name:'波若威',sector:'CPO/矽光子',price:1035,fit:'勿追',kd_k:null,kd_d:null,macd:'',osc:null,moat:'CPO技術全球領先，矽光子7劍客',buyzone:'850~950',note:'PE296倍嚴重過熱',qtr:'',eps1:1.2,eps2:null,eps3:null,eps4:null,roe:12.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3008',name:'大立光',sector:'精密光學',price:3540,fit:'最適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'全球高階手機鏡頭龍頭，毛利55%',buyzone:'2650~2750',note:'財務最優質，PE歷史低位',qtr:'',eps1:45.2,eps2:null,eps3:null,eps4:null,roe:28.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2356',name:'英業達',sector:'AI伺服器ODM',price:55,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'GB200主力廠，NVIDIA深度合作',buyzone:'46~50',note:'殖利率4.8%穩健',qtr:'',eps1:0.82,eps2:null,eps3:null,eps4:null,roe:15.2,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3481',name:'群創',sector:'OLED/面板',price:37.5,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:null,moat:'OLED大尺寸布局，IT面板需求',buyzone:'33~36',note:'景氣循環高度敏感',qtr:'',eps1:0.28,eps2:null,eps3:null,eps4:null,roe:5.2,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2301',name:'光寶科',sector:'AI電源',price:220,fit:'中性觀察',kd_k:null,kd_d:null,macd:'',osc:null,moat:'GB200/300電源龍頭，NVIDIA合作深',buyzone:'195~210',note:'ROE僅4.2%，毛利下滑',qtr:'',eps1:2.28,eps2:null,eps3:null,eps4:null,roe:4.2,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'8155',name:'博智',sector:'PCB/HDI',price:411,fit:'適合',kd_k:23.9,kd_d:39.4,macd:'',osc:null,moat:'PCB龍頭之一，外資持續買超',buyzone:'390~410',note:'KD超賣，等黃金交叉',qtr:'',eps1:5.2,eps2:null,eps3:null,eps4:null,roe:12.5,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'6257',name:'矽格',sector:'IC封測',price:218.5,fit:'最適合',kd_k:78.7,kd_d:79.2,macd:'',osc:null,moat:'毛利連3季提升，現金流強勁',buyzone:'210~215',note:'存貨極低，財報品質優異',qtr:'',eps1:2.1,eps2:null,eps3:null,eps4:null,roe:4.6,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'8261',name:'富鼎',sector:'IC通路/功率半導體',price:149,fit:'最適合',kd_k:77.2,kd_d:70.5,macd:'',osc:null,moat:'毛利38%/負債11%，財務極健康',buyzone:'135~138',note:'等回調135~138絕佳進場',qtr:'',eps1:1.57,eps2:null,eps3:null,eps4:null,roe:13,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'5425',name:'台半',sector:'功率半導體',price:86.9,fit:'中性觀察',kd_k:78.4,kd_d:72.3,macd:'',osc:null,moat:'營收歷史新高，毛利持續提升',buyzone:'80~82',note:'ROE偏低，等回調',qtr:'',eps1:0.7,eps2:null,eps3:null,eps4:null,roe:2.2,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'2481',name:'強茂',sector:'功率半導體',price:133,fit:'中性觀察',kd_k:78.6,kd_d:72.6,macd:'',osc:null,moat:'毛利32%穩定，功率半導體題材',buyzone:'125~128',note:'PE44倍偏高',qtr:'',eps1:0.75,eps2:null,eps3:null,eps4:null,roe:2,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'6147',name:'頎邦',sector:'IC封測',price:215.5,fit:'中性觀察',kd_k:76.8,kd_d:75.4,macd:'',osc:null,moat:'負債僅15.5%，本業改善持續',buyzone:'190~200',note:'等主力轉買超',qtr:'',eps1:0.59,eps2:null,eps3:null,eps4:null,roe:0.9,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
+{code:'3711',name:'日月光投控',sector:'IC封測龍頭',price:561,fit:'適合',kd_k:null,kd_d:null,macd:'',osc:null,moat:'IC封測全球龍頭，FOPLP/3DIC技術',buyzone:'470~480',note:'EPS成長85%，等回調',qtr:'',eps1:3.24,eps2:null,eps3:null,eps4:null,roe:4.1,gm_pct:null,dr_pct:null,yoy_pct:null,pe_ratio:null,target_price:null},
 ];
 
 function calcDerived(s){
   const n=v=>(!v||isNaN(v))?null:Number(v);
-  const rev=n(s.rev_q),gp=n(s.gp),asset=n(s.asset),debt=n(s.debt),price=n(s.price);
-  const eps1=n(s.eps1),eps2=n(s.eps2),eps3=n(s.eps3),eps4=n(s.eps4),revly=n(s.revly);
-  s.gm_calc=rev&&gp?Math.round(gp/rev*1000)/10:null;
-  const ttm=[eps1,eps2,eps3,eps4].filter(x=>x!==null).reduce((a,b)=>a+b,0);
-  const validEps=[eps1,eps2,eps3,eps4].filter(x=>x!==null).length;
-  s.pe_ttm=price&&validEps===4?Math.round(price/ttm*10)/10:null;
-  s.debt_ratio=asset&&debt?Math.round(debt/asset*1000)/10:null;
-  s.rev_yoy=rev&&revly?Math.round((rev-revly)/revly*1000)/10:null;
+  const price=n(s.price);
+  const eps1=n(s.eps1),eps2=n(s.eps2),eps3=n(s.eps3),eps4=n(s.eps4);
+  const validEps=[eps1,eps2,eps3,eps4].filter(x=>x!==null);
+  const ttm=validEps.length===4?validEps.reduce((a,b)=>a+b,0):null;
+  s.pe_ttm=price&&ttm?Math.round(price/ttm*10)/10:null;
+  s.gm_calc=n(s.gm_pct);
+  s.debt_ratio=n(s.dr_pct);
+  s.rev_yoy=n(s.yoy_pct);
+  s.fair_value=n(s.pe_ratio)&&ttm?Math.round(n(s.pe_ratio)*ttm):null;
   return s;
 }
 
@@ -448,30 +424,34 @@ function render(){
     return av>bv?sd:av<bv?-sd:0;
   });
   const tb=document.getElementById('tb');
-  if(!list.length){tb.innerHTML='<tr><td colspan="16" style="text-align:center;padding:2rem;color:#9ca3af">沒有符合條件的股票</td></tr>';updateStats();return;}
+  if(!list.length){tb.innerHTML='<tr><td colspan="17" style="text-align:center;padding:2rem;color:#9ca3af">沒有符合條件的股票</td></tr>';updateStats();return;}
   tb.innerHTML=list.map(s=>{
     const i=stocks.indexOf(s);
     const sig=kdSignal(s.kd_k,s.kd_d);
     const peH=s.pe_ttm?'<span class="'+(s.pe_ttm>50?'peh':'')+'">'+(+s.pe_ttm).toFixed(1)+'x</span>':'—';
     const moatS=(s.moat||'').length>22?(s.moat||'').slice(0,20)+'…':s.moat||'—';
-    const revDisp=s.rev_q?fmtM(s.rev_q):'—';
     const gmDisp=s.gm_calc!=null?s.gm_calc.toFixed(1)+'%':'—';
     const debtDisp=s.debt_ratio!=null?s.debt_ratio.toFixed(1)+'%':'—';
     const roeDisp=s.roe!=null?(+s.roe).toFixed(1)+'%':'—';
+    const price=s.price;
+    const fvDisp=s.fair_value!=null?('<span style="color:'+(price&&s.fair_value>price?'#16a34a':'#dc2626')+'">'+s.fair_value.toLocaleString()+'</span>'):'—';
+    const tpDisp=s.target_price!=null?('<span style="color:'+(price&&s.target_price>price?'#16a34a':'#dc2626')+'">'+s.target_price.toLocaleString()+'</span>'):'—';
+    const oscDisp=s.osc!=null?('<span class="'+(s.osc>0?'macd-up':'macd-dn')+'">'+(s.osc>0?'+':'')+s.osc+'</span>'):'<span class="macd-nil">—</span>';
     return '<tr>'+
       '<td style="font-weight:700">'+s.code+'</td>'+
       '<td title="'+(s.note||'')+'">'+s.name+'</td>'+
       '<td style="color:#9ca3af;font-size:10px">'+(s.sector||'—')+'</td>'+
       '<td>'+fmtP(s.price)+'</td>'+
-      '<td style="color:#374151">'+revDisp+(s.qtr?'<div style="font-size:9px;color:#9ca3af">'+s.qtr+'</div>':'')+'</td>'+
       '<td>'+yoyHtml(s.rev_yoy)+'</td>'+
       '<td>'+gmDisp+'</td>'+
       '<td>'+peH+'</td>'+
       '<td>'+roeDisp+'</td>'+
       '<td>'+debtDisp+'</td>'+
+      '<td style="font-size:11px">'+fvDisp+'</td>'+
+      '<td style="font-size:11px">'+tpDisp+'</td>'+
       '<td style="font-size:10px;color:#6b7280" title="'+(s.moat||'')+'">'+moatS+'</td>'+
       '<td><span class="'+sig.cls+'">'+sig.txt+'</span></td>'+
-      '<td>'+macdTag(s.macd,s.osc)+'</td>'+
+      '<td>'+oscDisp+'</td>'+
       '<td style="font-size:10px;color:#9ca3af">'+(s.buyzone||'—')+'</td>'+
       '<td>'+fitTag(s.fit)+'</td>'+
       '<td><div style="display:flex;gap:3px">'+
@@ -494,21 +474,22 @@ function switchTab(t){
 
 function updateCalc(){
   const n=id=>{const v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;};
-  const rev=n('frev'),gp=n('fgp'),asset=n('fasset'),debt=n('fdebt'),price=n('fp');
-  const e1=n('feps1'),e2=n('feps2'),e3=n('feps3'),e4=n('feps4'),revly=n('frevly');
-  const gm=rev&&gp?Math.round(gp/rev*1000)/10:null;
+  const price=n('fp');
+  const e1=n('feps1'),e2=n('feps2'),e3=n('feps3'),e4=n('feps4');
+  const per=n('fper'),tp=n('ftp');
   const ttm=[e1,e2,e3,e4].filter(x=>x!==null);
-  const pe=price&&ttm.length===4?Math.round(price/ttm.reduce((a,b)=>a+b,0)*10)/10:null;
-  const dr=asset&&debt?Math.round(debt/asset*1000)/10:null;
-  const yoy=rev&&revly?Math.round((rev-revly)/revly*1000)/10:null;
-  document.getElementById('c-gm').textContent=gm!=null?gm.toFixed(1)+'%':'—';
+  const ttmSum=ttm.length===4?ttm.reduce((a,b)=>a+b,0):null;
+  const pe=price&&ttmSum?Math.round(price/ttmSum*10)/10:null;
+  const fv=per&&ttmSum?Math.round(per*ttmSum):null;
+  document.getElementById('c-ttm').textContent=ttmSum!=null?ttmSum.toFixed(2)+'元':'—';
   document.getElementById('c-pe').textContent=pe!=null?pe.toFixed(1)+'x':'—';
-  document.getElementById('c-debt').textContent=dr!=null?dr.toFixed(1)+'%':'—';
-  document.getElementById('c-yoy').textContent=yoy!=null?(yoy>=0?'+':'')+yoy.toFixed(1)+'%':'—';
-  document.getElementById('c-yoy').style.color=yoy!=null?(yoy>=0?'#16a34a':'#dc2626'):'#1d4ed8';
+  document.getElementById('c-fv').textContent=fv!=null?fv.toLocaleString()+'元':'—';
+  if(fv!=null)document.getElementById('c-fv').style.color=price&&fv>price?'#16a34a':'#dc2626';
+  document.getElementById('c-tp').textContent=tp!=null?tp.toLocaleString()+'元':'—';
+  if(tp!=null)document.getElementById('c-tp').style.color=price&&tp>price?'#16a34a':'#dc2626';
 }
 
-['frev','fgp','fasset','fdebt','fp','feps1','feps2','feps3','feps4','frevly'].forEach(id=>{
+['fp','feps1','feps2','feps3','feps4','fper','ftp'].forEach(id=>{
   document.addEventListener('DOMContentLoaded',()=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>{if(curTab==='fin')updateCalc();});});
 });
 
@@ -520,26 +501,21 @@ function setFields(s){
   document.getElementById('ffit').value=s.fit||'中性觀察';
   document.getElementById('fk').value=s.kd_k!=null?s.kd_k:'';
   document.getElementById('fd').value=s.kd_d!=null?s.kd_d:'';
-  document.getElementById('fmacd').value=s.macd||'';
-  document.getElementById('fosc').value=s.osc||'';
+  document.getElementById('fosc').value=s.osc!=null?s.osc:'';
   document.getElementById('fbz').value=s.buyzone||'';
   document.getElementById('fmw').value=s.moat||'';
   document.getElementById('fnt').value=s.note||'';
   document.getElementById('fqtr').value=s.qtr||'';
-  document.getElementById('frev').value=s.rev_q||'';
-  document.getElementById('fgp').value=s.gp||'';
-  document.getElementById('fop').value=s.op||'';
-  document.getElementById('fni').value=s.ni||'';
   document.getElementById('feps1').value=s.eps1!=null?s.eps1:'';
   document.getElementById('feps2').value=s.eps2!=null?s.eps2:'';
   document.getElementById('feps3').value=s.eps3!=null?s.eps3:'';
   document.getElementById('feps4').value=s.eps4!=null?s.eps4:'';
-  document.getElementById('fepsly').value=s.epsly!=null?s.epsly:'';
-  document.getElementById('fasset').value=s.asset||'';
-  document.getElementById('fdebt').value=s.debt||'';
-  document.getElementById('fbv').value=s.bv!=null?s.bv:'';
+  document.getElementById('fgm').value=s.gm_pct!=null?s.gm_pct:'';
+  document.getElementById('fdr').value=s.dr_pct!=null?s.dr_pct:'';
   document.getElementById('froe').value=s.roe!=null?s.roe:'';
-  document.getElementById('frevly').value=s.revly||'';
+  document.getElementById('fyoy').value=s.yoy_pct!=null?s.yoy_pct:'';
+  document.getElementById('fper').value=s.pe_ratio!=null?s.pe_ratio:'';
+  document.getElementById('ftp').value=s.target_price!=null?s.target_price:'';
 }
 
 function openAdd(){
@@ -567,15 +543,15 @@ function getFields(){
     sector:document.getElementById('fsc2').value.trim(),
     price:n('fp'),fit:document.getElementById('ffit').value,
     kd_k:n('fk'),kd_d:n('fd'),
-    macd:document.getElementById('fmacd').value,
-    osc:document.getElementById('fosc').value,
+    osc:n('fosc'),
+    macd:'',
     buyzone:document.getElementById('fbz').value.trim(),
     moat:document.getElementById('fmw').value.trim(),
     note:document.getElementById('fnt').value.trim(),
     qtr:document.getElementById('fqtr').value.trim(),
-    rev_q:n('frev'),gp:n('fgp'),op:n('fop'),ni:n('fni'),
-    eps1:n('feps1'),eps2:n('feps2'),eps3:n('feps3'),eps4:n('feps4'),epsly:n('fepsly'),
-    asset:n('fasset'),debt:n('fdebt'),bv:n('fbv'),roe:n('froe'),revly:n('frevly'),
+    eps1:n('feps1'),eps2:n('feps2'),eps3:n('feps3'),eps4:n('feps4'),
+    gm_pct:n('fgm'),dr_pct:n('fdr'),roe:n('froe'),yoy_pct:n('fyoy'),
+    pe_ratio:n('fper'),target_price:n('ftp'),
   };
 }
 
@@ -589,10 +565,10 @@ function saveS(){
     if(old.price!==obj.price&&obj.price)changes.push('現價→'+obj.price);
     if(old.fit!==obj.fit)changes.push('適合度→'+obj.fit);
     if(old.kd_k!==obj.kd_k&&obj.kd_k!=null)changes.push('K值→'+obj.kd_k);
-    if(old.macd!==obj.macd&&obj.macd)changes.push('MACD→'+obj.macd);
+    if(old.osc!==obj.osc&&obj.osc!=null)changes.push('OSC→'+obj.osc);
     if(old.eps1!==obj.eps1&&obj.eps1!=null)changes.push('EPS→'+obj.eps1);
-    if(old.rev_q!==obj.rev_q&&obj.rev_q!=null)changes.push('營收→'+fmtM(obj.rev_q));
-    if(old.qtr!==obj.qtr&&obj.qtr)changes.push('季別→'+obj.qtr);
+    if(old.yoy_pct!==obj.yoy_pct&&obj.yoy_pct!=null)changes.push('YoY→'+obj.yoy_pct+'%');
+    if(old.target_price!==obj.target_price&&obj.target_price!=null)changes.push('目標價→'+obj.target_price);
     stocks[eidx]=obj;
   }else{
     stocks.push(obj);
